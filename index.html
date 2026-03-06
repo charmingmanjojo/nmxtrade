@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>NMXTrade — Nexus Market Exchange</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -22,10 +23,6 @@ button{cursor:pointer;border:none;background:none;color:inherit}
 input{color:var(--t0);background:var(--bg2);border:1px solid var(--border2);outline:none;padding:8px 10px;border-radius:2px;width:100%}
 input:focus{border-color:var(--gold)}
 input[type=number]::-webkit-inner-spin-button{opacity:.4}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:999;backdrop-filter:blur(4px)}
-.modal{background:var(--bg1);border:1px solid var(--gold);border-radius:4px;padding:36px 32px;max-width:460px;width:90%;box-shadow:0 0 80px rgba(232,184,75,.1)}
-.modal-title{color:var(--gold);font-size:14px;letter-spacing:.12em;margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.modal-badge{width:30px;height:30px;border-radius:50%;background:var(--gold);color:#000;font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 #navbar{background:var(--bg1);border-bottom:1px solid var(--border);height:44px;display:flex;align-items:center;padding:0 14px;gap:14px;flex-shrink:0;z-index:10}
 .nav-logo{font-size:19px;color:var(--gold);letter-spacing:-.02em;font-weight:700;white-space:nowrap}
 .nav-logo span{color:var(--t0)}
@@ -41,10 +38,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:.4}
 #tape{background:var(--bg0);border-bottom:1px solid var(--bg3);height:26px;overflow:hidden;display:flex;align-items:center;flex-shrink:0}
 .tape-inner{display:flex;white-space:nowrap;animation:tape 100s linear infinite;font-size:10px;letter-spacing:.06em}
 @keyframes tape{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.ti{padding:0 14px;color:var(--t2)}
-.ti b{color:var(--t0)}
-.ti.up b{color:var(--green)}
-.ti.dn b{color:var(--red)}
+.ti{padding:0 14px;color:var(--t2)}.ti b{color:var(--t0)}.ti.up b{color:var(--green)}.ti.dn b{color:var(--red)}
 #body{flex:1;display:flex;overflow:hidden;min-height:0}
 #sidebar{width:172px;flex-shrink:0;background:var(--bg1);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
 .sb-search{padding:7px 8px;border-bottom:1px solid var(--border)}
@@ -56,23 +50,18 @@ input[type=number]::-webkit-inner-spin-button{opacity:.4}
 .wl-hdr{padding:5px 10px;font-size:8px;letter-spacing:.2em;color:var(--t4);border-bottom:1px solid var(--bg3)}
 #watchlist{flex:1;overflow-y:auto}
 .wl-row{padding:8px 10px;border-bottom:1px solid var(--bg3);cursor:pointer;transition:background .1s;border-left:2px solid transparent}
-.wl-row:hover{background:var(--bg2)}
-.wl-row.active{background:var(--bg2);border-left-color:var(--gold)}
+.wl-row:hover{background:var(--bg2)}.wl-row.active{background:var(--bg2);border-left-color:var(--gold)}
 .wl-top{display:flex;justify-content:space-between;align-items:center}
-.wl-sym{font-size:11px;font-weight:700}
-.wl-pct{font-size:10px}
+.wl-sym{font-size:11px;font-weight:700}.wl-pct{font-size:10px}
 .wl-price{font-size:11px;color:var(--t1);margin-top:1px}
 .wl-name{font-size:9px;color:var(--t3);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #center{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 .sym-hdr{padding:9px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap}
 .sym-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .sym-ticker{font-size:14px;color:var(--gold);font-weight:700}
-.sym-full{font-size:11px;color:var(--t2)}
-.sym-tag{font-size:8px;color:var(--t4);padding:2px 6px;border:1px solid var(--border2);border-radius:2px}
-.sym-price{font-size:22px;color:var(--gold);font-weight:700}
-.sym-chg{font-size:12px}
-.sym-stats{margin-left:auto;display:flex;gap:14px;font-size:9px;color:var(--t4)}
-.sym-stats span{color:var(--t1)}
+.sym-full{font-size:11px;color:var(--t2)}.sym-tag{font-size:8px;color:var(--t4);padding:2px 6px;border:1px solid var(--border2);border-radius:2px}
+.sym-price{font-size:22px;color:var(--gold);font-weight:700}.sym-chg{font-size:12px}
+.sym-stats{margin-left:auto;display:flex;gap:14px;font-size:9px;color:var(--t4)}.sym-stats span{color:var(--t1)}
 .chart-tabs{display:flex;border-bottom:1px solid var(--border);padding:0 4px;flex-shrink:0}
 .ct-btn{padding:8px 12px;font-size:9px;letter-spacing:.1em;color:var(--t3);border-bottom:2px solid transparent;cursor:pointer}
 .ct-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
@@ -80,12 +69,10 @@ input[type=number]::-webkit-inner-spin-button{opacity:.4}
 #candle-chart{width:100%;background:var(--bg0);border-bottom:1px solid var(--border);display:block}
 .news-row{padding:13px 14px;border-bottom:1px solid var(--bg3);display:flex;gap:12px}
 .news-dot{width:6px;height:6px;border-radius:50%;margin-top:4px;flex-shrink:0}
-.news-head{font-size:12px;color:var(--t0);line-height:1.5;margin-bottom:3px}
-.news-meta{font-size:9px;color:var(--t4)}
+.news-head{font-size:12px;color:var(--t0);line-height:1.5;margin-bottom:3px}.news-meta{font-size:9px;color:var(--t4)}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bg3);border:1px solid var(--bg3);margin:14px}
 .info-cell{background:var(--bg1);padding:10px 12px}
-.info-label{font-size:9px;color:var(--t4);margin-bottom:3px;letter-spacing:.08em}
-.info-val{font-size:12px;color:var(--t1)}
+.info-label{font-size:9px;color:var(--t4);margin-bottom:3px;letter-spacing:.08em}.info-val{font-size:12px;color:var(--t1)}
 .info-desc{padding:14px;font-size:11px;color:var(--t2);line-height:1.75}
 #order-panel{width:244px;flex-shrink:0;background:var(--bg1);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
 .op-hdr{padding:11px 13px;border-bottom:1px solid var(--border);font-size:10px;color:var(--t2);letter-spacing:.08em}
@@ -93,20 +80,16 @@ input[type=number]::-webkit-inner-spin-button{opacity:.4}
 .op-tab{flex:1;padding:8px 4px;font-size:9px;letter-spacing:.1em;color:var(--t3);border-bottom:2px solid transparent;text-align:center;cursor:pointer}
 .op-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
 .op-body{flex:1;overflow-y:auto;padding:12px 12px 16px}
-.op-field{margin-bottom:11px}
-.op-label{font-size:9px;letter-spacing:.1em;color:var(--t4);margin-bottom:4px}
+.op-field{margin-bottom:11px}.op-label{font-size:9px;letter-spacing:.1em;color:var(--t4);margin-bottom:4px}
 .dir-btns{display:flex;gap:3px}
 .dir-btn{flex:1;padding:7px 2px;font-size:9px;letter-spacing:.06em;border:1px solid var(--border2);border-radius:2px;color:var(--t3);background:transparent;text-align:center;cursor:pointer}
 .dir-btn.buy.active{background:var(--gbg);border-color:var(--green);color:var(--green)}
 .dir-btn.sell.active{background:var(--rbg);border-color:var(--red);color:var(--red)}
 .op-summary{background:var(--bg0);border:1px solid var(--border);border-radius:2px;padding:9px 10px;margin-bottom:11px}
-.op-sumrow{display:flex;justify-content:space-between;margin-bottom:3px;font-size:10px}
-.op-sumrow:last-child{margin-bottom:0}
-.op-sumkey{color:var(--t4)}
-.op-sumval{color:var(--t1)}
+.op-sumrow{display:flex;justify-content:space-between;margin-bottom:3px;font-size:10px}.op-sumrow:last-child{margin-bottom:0}
+.op-sumkey{color:var(--t4)}.op-sumval{color:var(--t1)}
 .op-submit{width:100%;padding:11px;border-radius:2px;font-size:10px;font-weight:700;letter-spacing:.1em;font-family:'Courier New',monospace;cursor:pointer;border:none}
-.op-submit.buy{background:#14532d;color:#fff}
-.op-submit.sell{background:#7f1d1d;color:#fff}
+.op-submit.buy{background:#14532d;color:#fff}.op-submit.sell{background:#7f1d1d;color:#fff}
 .op-msg{padding:7px 9px;border-radius:2px;font-size:10px;margin-bottom:10px;line-height:1.4}
 .op-msg.ok{background:var(--gbg);border:1px solid var(--green);color:var(--green)}
 .op-msg.err{background:var(--rbg);border:1px solid var(--red);color:var(--red)}
@@ -121,8 +104,7 @@ input[type=number]::-webkit-inner-spin-button{opacity:.4}
 .pos-table th{padding:5px 9px;font-size:8px;letter-spacing:.1em;color:var(--t4);font-weight:600;border-bottom:1px solid var(--border);white-space:nowrap;text-align:right}
 .pos-table th:first-child{text-align:left}
 .pos-table td{padding:5px 9px;font-size:10px;color:var(--t1);white-space:nowrap;text-align:right;border-bottom:1px solid var(--bg3)}
-.pos-table td:first-child{text-align:left}
-.pos-table tr:hover td{background:var(--bg2)}
+.pos-table td:first-child{text-align:left}.pos-table tr:hover td{background:var(--bg2)}
 .pos-empty{padding:18px;text-align:center;font-size:11px;color:var(--t4)}
 .close-btn{padding:3px 8px;font-size:8px;letter-spacing:.06em;background:transparent;border:1px solid var(--border2);border-radius:2px;color:var(--red);cursor:pointer}
 .close-btn:hover{background:var(--rbg);border-color:var(--red)}
@@ -139,168 +121,159 @@ input[type=number]::-webkit-inner-spin-button{opacity:.4}
 .au-bal{font-size:12px;color:var(--gold);min-width:120px}
 .au-actions{display:flex;gap:5px;margin-left:auto;flex-wrap:wrap;align-items:center}
 .au-input{width:90px;padding:4px 7px;font-size:10px}
-.au-btn{padding:4px 9px;font-size:9px;letter-spacing:.06em;border-radius:2px;cursor:pointer;border:none;font-family:'Courier New',monospace}
-.au-set{background:var(--gbg);border:1px solid var(--green)!important;color:var(--green);border:none}
-.au-add{background:#052830;border:1px solid var(--blue)!important;color:var(--blue);border:none}
-.au-sub{background:var(--rbg);border:1px solid var(--red)!important;color:var(--red);border:none}
-.au-reset{background:var(--bg2);border:1px solid var(--border3)!important;color:var(--t2);border:none}
-.au-promote{background:#160e00;border:1px solid var(--amber)!important;color:var(--amber);border:none}
-.au-demote{background:var(--bg2);border:1px solid var(--border3)!important;color:var(--t3);border:none}
-.au-del{background:var(--rbg);border:1px solid var(--red)!important;color:var(--red);border:none}
-.au-btn{border:1px solid transparent}
-.au-set{border-color:var(--green)!important}
-.au-add{border-color:var(--blue)!important}
-.au-sub{border-color:var(--red)!important}
-.au-reset{border-color:var(--border3)!important}
-.au-promote{border-color:var(--amber)!important}
-.au-demote{border-color:var(--border3)!important}
-.au-del{border-color:var(--red)!important}
+.au-btn{padding:4px 9px;font-size:9px;letter-spacing:.06em;border-radius:2px;cursor:pointer;font-family:'Courier New',monospace;border:1px solid transparent}
+.au-set{background:var(--gbg);border-color:var(--green)!important;color:var(--green)}
+.au-add{background:#052830;border-color:var(--blue)!important;color:var(--blue)}
+.au-sub{background:var(--rbg);border-color:var(--red)!important;color:var(--red)}
+.au-reset{background:var(--bg2);border-color:var(--border3)!important;color:var(--t2)}
+.au-promote{background:#160e00;border-color:var(--amber)!important;color:var(--amber)}
+.au-demote{background:var(--bg2);border-color:var(--border3)!important;color:var(--t3)}
+.au-del{background:var(--rbg);border-color:var(--red)!important;color:var(--red)}
 #portfolio-view{flex:1;overflow-y:auto;padding:18px}
 .pv-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
 .pv-card{background:var(--bg2);border:1px solid var(--border2);border-radius:2px;padding:12px 14px}
-.pv-label{font-size:9px;color:var(--t4);margin-bottom:5px;letter-spacing:.08em}
-.pv-val{font-size:16px;font-weight:700}
+.pv-label{font-size:9px;color:var(--t4);margin-bottom:5px;letter-spacing:.08em}.pv-val{font-size:16px;font-weight:700}
 .tx-row{padding:7px 14px;border-bottom:1px solid var(--bg3);display:flex;justify-content:space-between;align-items:center;font-size:10px;gap:8px}
 .tx-row:hover{background:var(--bg2)}
 .tx-type{font-size:8px;padding:2px 6px;border-radius:2px;letter-spacing:.06em}
 .tx-buy{background:var(--gbg);border:1px solid var(--green);color:var(--green)}
 .tx-sell{background:var(--rbg);border:1px solid var(--red);color:var(--red)}
 .tx-meta{font-size:9px;color:var(--t3)}
-.login-wrap{height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg0);background-image:radial-gradient(ellipse at 20% 40%,rgba(232,184,75,.05) 0%,transparent 60%)}
-.login-box{width:340px;padding:0 10px}
-.login-logo{text-align:center;margin-bottom:40px}
-.login-sub{font-size:8px;letter-spacing:.4em;color:var(--t4);margin-bottom:8px}
-.login-main{font-size:30px;color:var(--gold);letter-spacing:-.02em;font-weight:700}
-.login-main span{color:var(--t0)}
-.login-line{width:32px;height:2px;background:var(--gold);margin:10px auto 0}
-.login-form{display:flex;flex-direction:column;gap:11px}
-.login-lbl{font-size:9px;letter-spacing:.12em;color:var(--t3);margin-bottom:4px}
-.login-note{background:var(--bg2);border:1px solid var(--border2);border-radius:2px;padding:8px 10px;font-size:9px;color:var(--t4);line-height:1.55}
-.login-submit{padding:12px;background:var(--gold);border:none;border-radius:2px;cursor:pointer;font-size:10px;font-family:'Courier New',monospace;font-weight:700;letter-spacing:.12em;color:#000}
-.login-toggle{text-align:center;margin-top:12px;font-size:10px;color:var(--t3)}
-.login-toggle a{color:var(--gold);cursor:pointer;text-decoration:none}
-.login-err{background:var(--rbg);border:1px solid var(--red);color:var(--red);padding:8px 10px;border-radius:2px;font-size:10px}
-.login-footer{text-align:center;margin-top:18px;font-size:8px;color:var(--t4);letter-spacing:.05em}
+
+/* LOGIN */
+.auth-wrap{height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg0);background-image:radial-gradient(ellipse at 20% 40%,rgba(232,184,75,.05) 0%,transparent 60%)}
+.auth-box{width:360px;padding:0 10px}
+.auth-logo{text-align:center;margin-bottom:40px}
+.auth-sub{font-size:8px;letter-spacing:.4em;color:var(--t4);margin-bottom:8px}
+.auth-main{font-size:30px;color:var(--gold);letter-spacing:-.02em;font-weight:700}
+.auth-main span{color:var(--t0)}
+.auth-line{width:32px;height:2px;background:var(--gold);margin:10px auto 0}
+.auth-form{display:flex;flex-direction:column;gap:11px}
+.auth-lbl{font-size:9px;letter-spacing:.12em;color:var(--t3);margin-bottom:4px}
+.auth-submit{padding:12px;background:var(--gold);border:none;border-radius:2px;cursor:pointer;font-size:10px;font-family:'Courier New',monospace;font-weight:700;letter-spacing:.12em;color:#000}
+.auth-submit:disabled{opacity:.5;cursor:not-allowed}
+.auth-toggle{text-align:center;margin-top:12px;font-size:10px;color:var(--t3)}
+.auth-toggle a{color:var(--gold);cursor:pointer;text-decoration:none}
+.auth-err{background:var(--rbg);border:1px solid var(--red);color:var(--red);padding:8px 10px;border-radius:2px;font-size:10px}
+.auth-ok{background:var(--gbg);border:1px solid var(--green);color:var(--green);padding:8px 10px;border-radius:2px;font-size:10px}
+.auth-note{background:var(--bg2);border:1px solid var(--border2);border-radius:2px;padding:10px 12px;font-size:9px;color:var(--t4);line-height:1.7}
+.auth-footer{text-align:center;margin-top:18px;font-size:8px;color:var(--t4);letter-spacing:.05em}
+.auth-divider{display:flex;align-items:center;gap:8px;font-size:9px;color:var(--t4)}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border2)}
+
+/* LOADING */
+.loading-screen{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;background:var(--bg0)}
+.loading-logo{font-size:28px;color:var(--gold);font-weight:700;letter-spacing:-.02em}
+.loading-logo span{color:var(--t0)}
+.loading-bar{width:200px;height:2px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.loading-fill{height:100%;background:var(--gold);animation:loadfill 1.5s ease-in-out infinite}
+@keyframes loadfill{0%{width:0;margin-left:0}50%{width:60%;margin-left:20%}100%{width:0;margin-left:100%}}
+.loading-txt{font-size:9px;letter-spacing:.2em;color:var(--t4)}
+
 .up{color:var(--green)!important}.dn{color:var(--red)!important}.gold{color:var(--gold)!important}
 </style>
 </head>
 <body>
-<div id="root"></div>
+<div id="root"><div class="loading-screen"><div class="loading-logo">NMX<span>Trade</span></div><div class="loading-bar"><div class="loading-fill"></div></div><div class="loading-txt">CONNECTING TO NEXUS MARKET EXCHANGE</div></div></div>
 <script>
+// ═══════════════════════════════════════════════════════════
+//  SUPABASE INIT
+// ═══════════════════════════════════════════════════════════
+const SUPA_URL = 'https://iqajqjazyaxkphqkszcu.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxYWpxamF6eWF4a3BocWtzemN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NzkxMTUsImV4cCI6MjA4ODM1NTExNX0.K3Wq8pdTMOhHnE01zkbRDQ8YTyHEiM9NPPxNHByWLfo';
+const { createClient } = supabase;
+const sb = createClient(SUPA_URL, SUPA_KEY);
 
-// ═══════════════════════════════════════════════
-//  STORAGE
-// ═══════════════════════════════════════════════
-const SK = 'nmxtrade_v5';
-function loadDB(){try{const r=localStorage.getItem(SK);if(r)return JSON.parse(r);}catch(e){}return null;}
-function saveDB(d){try{localStorage.setItem(SK,JSON.stringify(d));}catch(e){}}
-function initDB(){
-  const ex=loadDB();
-  if(ex&&ex.users)return ex;
-  const db={users:{
-    ezra:{u:'ezra',p:'bee2026',name:'Ezra Damon Bee',bio:'Founder & CEO, Bee Corp. Industries | Odessa, TX',isAdmin:false,cash:500000,pos:{BCII:{sh:5000,avg:82.40}},txs:[{id:'tx1',type:'BUY',sym:'BCII',sh:5000,px:82.40,total:412000,ts:Date.now()-86400000*3}],joined:Date.now()-86400000*30},
-    graham:{u:'graham',p:'sterling2026',name:'Graham Sterling',bio:'CEO, Sterling Industries',isAdmin:false,cash:2500000,pos:{STI:{sh:10000,avg:440.00}},txs:[{id:'tx2',type:'BUY',sym:'STI',sh:10000,px:440.00,total:4400000,ts:Date.now()-86400000*7}],joined:Date.now()-86400000*60},
-    bartholomew:{u:'bartholomew',p:'bcorp2026',name:'Bartholomew Bush',bio:'CEO, B-Corp',isAdmin:false,cash:750000,pos:{BCOR:{sh:3000,avg:155.00}},txs:[],joined:Date.now()-86400000*14}
-  }};
-  saveDB(db);return db;
-}
-
-// ═══════════════════════════════════════════════
-//  RNG
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+//  RNG + PRICE ENGINE
+// ═══════════════════════════════════════════════════════════
 function mkRng(seed){
   let s=seed;
   return ()=>{s=(s+0x6D2B79F5)|0;let t=Math.imul(s^(s>>>15),s|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};
 }
 
-// ═══════════════════════════════════════════════
-//  COMPANIES — Virgin AU only. No canon properties exist except Roxxon.
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+//  COMPANIES
+// ═══════════════════════════════════════════════════════════
 const COMPANIES = {
-  // ── THE THREE LORE COMPANIES ──
-  STI:  {n:"Sterling Industries",      s:"Conglomerate / Defense",   b:448.72, v:.007, t:.00028,iv:.18,bt:.85,sh:2.4e9,col:"#e8b84b",
+  STI:  {n:"Sterling Industries",      s:"Conglomerate / Defense",   b:448.72,v:.007, t:.00028,iv:.18,bt:.85,sh:2.4e9,col:"#e8b84b",
     ceo:"Graham Sterling",     f:"1963",emp:"312,000",
-    desc:"The undisputed titan of industry on the NMX. Sterling Industries leads every sector it enters — weapons manufacturing, aerospace defense, robotics, heavy industrial. No clean-energy division. CEO Graham Sterling has doubled defense contracts since taking the helm. Considered the AU's answer to what Stark Industries might have been.",
+    desc:"The undisputed titan of industry on the NMX. Sterling Industries leads every sector it enters — weapons manufacturing, aerospace defense, robotics, heavy industrial. No clean-energy division. CEO Graham Sterling has doubled defense contracts since taking the helm.",
     news:[{d:"Mar 4",h:"Sterling unveils Project ARCHON next-gen weapons platform",s:1},{d:"Mar 3",h:"STI Q1 earnings beat estimates by 14%; full-year guidance raised",s:1},{d:"Feb 28",h:"Sterling Aerospace awarded $9.2B government contract",s:1},{d:"Feb 20",h:"Graham Sterling testifies before Senate Armed Services Committee",s:0}]},
-  BCII: {n:"Bee Corp. Industries",      s:"Technology / Defense",     b:84.13,  v:.026, t:-.0009,iv:.54,bt:1.42,sh:8.9e8,col:"#f59e0b",recovery:.42,
+  BCII: {n:"Bee Corp. Industries",      s:"Technology / Defense",     b:84.13, v:.026,t:-.0009,iv:.54,bt:1.42,sh:8.9e8,col:"#f59e0b",recovery:.42,
     ceo:"Ezra Damon Bee",      f:"2001",emp:"54,000",
-    desc:"Founded and led by Ezra Damon Bee, 26, from Odessa, Texas — the youngest CEO on the NMX. Publicly known for consumer electronics and smart city infrastructure. Privately, Bee Corp. holds extensive classified government defense contracts and runs one of the most advanced covert R&D programs in the country. A recent laboratory incident has shaken investor confidence.",
-    news:[{d:"Mar 4",h:"BCII locks in $4.1B federal contracts — details classified; stock volatile",s:0},{d:"Mar 3",h:"Lab incident at undisclosed BCII R&D site; company calls it electrical fault",s:-1},{d:"Mar 1",h:"Anonymous source links BCII R&D incident to classified 'enhancement program'",s:-1},{d:"Feb 27",h:"BCII SmartGrid consumer line posts record Q4 adoption figures",s:1},{d:"Feb 25",h:"Federal investigation into BCII R&D reportedly ongoing; company disputes",s:-1}]},
-  BCOR: {n:"B-Corp",                    s:"Medical / BioScience",     b:157.44, v:.011, t:.00018,iv:.29,bt:.92,sh:4.2e8,col:"#34d399",
+    desc:"Founded and led by Ezra Damon Bee, 26, from Odessa, Texas — the youngest CEO on the NMX. Publicly known for consumer electronics and smart city infrastructure. Privately, Bee Corp. holds extensive classified government defense contracts and runs one of the most advanced covert R&D programs in the country.",
+    news:[{d:"Mar 4",h:"BCII locks in $4.1B federal contracts — details classified",s:0},{d:"Mar 3",h:"Lab incident at undisclosed BCII R&D site; company calls it electrical fault",s:-1},{d:"Mar 1",h:"Anonymous source links BCII R&D incident to classified enhancement program",s:-1},{d:"Feb 27",h:"BCII SmartGrid consumer line posts record Q4 adoption figures",s:1}]},
+  BCOR: {n:"B-Corp",                    s:"Medical / BioScience",     b:157.44,v:.011,t:.00018,iv:.29,bt:.92,sh:4.2e8,col:"#34d399",
     ceo:"Bartholomew Bush",    f:"1987",emp:"18,200",
-    desc:"A medical and pharmaceutical company led by Bartholomew Bush. Reputable in diagnostics and patient care. B-Corp's private BioScience division is among the most advanced in the country, though the company discloses almost nothing about its internal research programs. Quietly expanding its Raleigh campus.",
-    news:[{d:"Mar 4",h:"B-Corp CellSync diagnostic platform receives full FDA clearance",s:1},{d:"Mar 2",h:"BCOR announces $600M private placement to fund advanced biological research",s:1},{d:"Feb 26",h:"B-Corp quietly doubles BioScience Research Campus capacity in Raleigh, NC",s:0},{d:"Feb 22",h:"Analysts raise BCOR price target to $175 on strong pipeline outlook",s:1}]},
-
-  // ── ROXXON (only canon company in this AU) ──
-  RXON: {n:"Roxxon Energy Corp.",        s:"Oil & Gas",                b:76.40,  v:.014, t:-.0001,iv:.32,bt:1.1, sh:6.2e8,col:"#ef4444",
+    desc:"A medical and pharmaceutical company led by Bartholomew Bush. Reputable in diagnostics and patient care. B-Corp's private BioScience division is among the most advanced in the country.",
+    news:[{d:"Mar 4",h:"B-Corp CellSync diagnostic platform receives full FDA clearance",s:1},{d:"Mar 2",h:"BCOR announces $600M private placement to fund advanced biological research",s:1},{d:"Feb 26",h:"B-Corp quietly doubles BioScience Research Campus capacity in Raleigh, NC",s:0}]},
+  RXON: {n:"Roxxon Energy Corp.",        s:"Oil & Gas",                b:76.40, v:.014,t:-.0001,iv:.32,bt:1.1, sh:6.2e8,col:"#ef4444",
     ceo:"Dario Agger",         f:"1937",emp:"82,000",
-    desc:"One of the largest and most controversial energy conglomerates on the NMX. Roxxon has faced dozens of regulatory investigations over its 80-year history, yet consistently avoids liability through aggressive legal teams and political lobbying. Its environmental record is catastrophic; its profits, consistent.",
-    news:[{d:"Mar 4",h:"Roxxon Gulf platform spill contained; EPA penalties expected",s:-1},{d:"Mar 1",h:"RXON lobbying arm blocks clean energy subsidy bill for third consecutive year",s:0},{d:"Feb 22",h:"Roxxon acquires three Alaskan drilling rights for undisclosed sum",s:1},{d:"Feb 14",h:"Senate subcommittee opens new probe into Roxxon offshore safety records",s:-1}]},
-
-  // ── ORIGINAL AU COMPANIES ──
-  NDX:  {n:"Nexus Dynamics",            s:"Aerospace / Defense",      b:213.90, v:.009, t:.0002, iv:.22,bt:1.05,sh:5.6e8,col:"#60a5fa",
+    desc:"One of the largest and most controversial energy conglomerates on the NMX. Roxxon has faced dozens of regulatory investigations over its 80-year history, yet consistently avoids liability through aggressive legal teams and political lobbying.",
+    news:[{d:"Mar 4",h:"Roxxon Gulf platform spill contained; EPA penalties expected",s:-1},{d:"Mar 1",h:"RXON lobbying arm blocks clean energy subsidy bill for third consecutive year",s:0},{d:"Feb 22",h:"Roxxon acquires three Alaskan drilling rights for undisclosed sum",s:1}]},
+  NDX:  {n:"Nexus Dynamics",            s:"Aerospace / Defense",      b:213.90,v:.009,t:.0002, iv:.22,bt:1.05,sh:5.6e8,col:"#60a5fa",
     ceo:"Col. (Ret.) James Holt",f:"1978",emp:"41,000",
-    desc:"Next-generation aerospace systems and autonomous defense platforms. A premier government contractor with close ties to domestic and allied military programs. Known for drone swarm tech and advanced guidance systems.",
+    desc:"Next-generation aerospace systems and autonomous defense platforms. A premier government contractor known for drone swarm tech and advanced guidance systems.",
     news:[{d:"Mar 3",h:"Nexus wins DARPA contract for autonomous drone swarm system",s:1},{d:"Feb 28",h:"NDX missile guidance division expands to third international partner",s:1},{d:"Feb 21",h:"Nexus posts Q4 miss; supply chain headwinds cited",s:-1}]},
-  VTGS: {n:"Vantage Systems",           s:"Cybersecurity",            b:99.18,  v:.014, t:.00015,iv:.35,bt:1.2, sh:3.1e8,col:"#a78bfa",
+  VTGS: {n:"Vantage Systems",           s:"Cybersecurity",            b:99.18, v:.014,t:.00015,iv:.35,bt:1.2, sh:3.1e8,col:"#a78bfa",
     ceo:"Priya Anand",         f:"2009",emp:"12,800",
     desc:"Cloud infrastructure and cybersecurity serving enterprise clients across 60 countries. Vantage's ARIA security suite is an industry standard for financial and government networks.",
-    news:[{d:"Mar 4",h:"VTGS ARIA 4.0 deployed across 7 major U.S. financial institutions",s:1},{d:"Mar 1",h:"Vantage acquires rival CloudKernel for $340M",s:0},{d:"Feb 24",h:"Zero-day exploit targets ARIA clients; VTGS patches within 4 hours",s:-1}]},
-  MREN: {n:"Meridian Energy",           s:"Clean Energy",             b:62.55,  v:.012, t:.00005,iv:.28,bt:.78, sh:7.8e8,col:"#6ee7b7",
+    news:[{d:"Mar 4",h:"VTGS ARIA 4.0 deployed across 7 major U.S. financial institutions",s:1},{d:"Mar 1",h:"Vantage acquires rival CloudKernel for $340M",s:0}]},
+  MREN: {n:"Meridian Energy",           s:"Clean Energy",             b:62.55, v:.012,t:.00005,iv:.28,bt:.78, sh:7.8e8,col:"#6ee7b7",
     ceo:"Samuel Okoro",        f:"2006",emp:"9,400",
-    desc:"Clean energy infrastructure operating large-scale solar, wind, and hydrogen projects. Most ESG-compliant firm on the NMX, with operations across 22 states.",
-    news:[{d:"Mar 3",h:"Meridian breaks ground on Nevada hydrogen megaproject",s:1},{d:"Feb 27",h:"MREN secures EU Green Deal funding; first U.S. firm to qualify",s:1},{d:"Feb 19",h:"Rising lithium costs squeeze Meridian storage margins",s:-1}]},
-  CSTL: {n:"Castellan Group",           s:"Financial Services",       b:188.62, v:.007, t:.0001, iv:.16,bt:.7,  sh:1.1e9,col:"#fb923c",
+    desc:"Clean energy infrastructure operating large-scale solar, wind, and hydrogen projects. Most ESG-compliant firm on the NMX.",
+    news:[{d:"Mar 3",h:"Meridian breaks ground on Nevada hydrogen megaproject",s:1},{d:"Feb 27",h:"MREN secures EU Green Deal funding; first U.S. firm to qualify",s:1}]},
+  CSTL: {n:"Castellan Group",           s:"Financial Services",       b:188.62,v:.007,t:.0001, iv:.16,bt:.7,  sh:1.1e9,col:"#fb923c",
     ceo:"Victoria Hale",       f:"1954",emp:"76,000",
     desc:"A diversified financial holding company with investment banking, insurance, and private equity. Castellan's vast portfolio makes it a bellwether for overall NMX market health.",
-    news:[{d:"Mar 4",h:"Castellan raises dividend 8%; $2B buyback extended",s:1},{d:"Mar 2",h:"CSTL private equity arm closes $2.3B healthcare fund",s:1},{d:"Feb 26",h:"Regulatory review of Castellan insurance subsidiary continues",s:-1}]},
-  APBX: {n:"Apex BioTech",              s:"Biotechnology",            b:43.27,  v:.032, t:-.0001,iv:.67,bt:1.85,sh:1.8e8,col:"#f472b6",
+    news:[{d:"Mar 4",h:"Castellan raises dividend 8%; $2B buyback extended",s:1},{d:"Mar 2",h:"CSTL private equity arm closes $2.3B healthcare fund",s:1}]},
+  APBX: {n:"Apex BioTech",              s:"Biotechnology",            b:43.27, v:.032,t:-.0001,iv:.67,bt:1.85,sh:1.8e8,col:"#f472b6",
     ceo:"Dr. Cassandra Wren",  f:"2015",emp:"3,100",
-    desc:"Clinical-stage biotech focused on gene therapy and regenerative medicine. Apex's pipeline includes 14 active trials. Recently announced a partnership with B-Corp.",
-    news:[{d:"Mar 3",h:"APBX Phase 2 trial shows significant efficacy signal",s:1},{d:"Feb 28",h:"Apex secondary offering dilutes shares; stock -6%",s:-1},{d:"Feb 22",h:"B-Corp / Apex cellular imaging partnership announced",s:1}]},
-  HAIM: {n:"Hummingbird Aerospace",     s:"Aerospace",                b:166.30, v:.010, t:.00018,iv:.25,bt:.98, sh:2.9e8,col:"#c084fc",
+    desc:"Clinical-stage biotech focused on gene therapy and regenerative medicine. Recently announced a partnership with B-Corp.",
+    news:[{d:"Mar 3",h:"APBX Phase 2 trial shows significant efficacy signal",s:1},{d:"Feb 28",h:"Apex secondary offering dilutes shares; stock -6%",s:-1}]},
+  HAIM: {n:"Hummingbird Aerospace",     s:"Aerospace",                b:166.30,v:.010,t:.00018,iv:.25,bt:.98, sh:2.9e8,col:"#c084fc",
     ceo:"Elena Vasquez",       f:"1988",emp:"31,000",
-    desc:"Designs VTOL aircraft, commercial drones, and atmospheric research platforms. Hummingbird's HM-9 short-range transport is a staple of urban air mobility.",
-    news:[{d:"Mar 3",h:"Hummingbird secures FAA certification for HM-9 air taxi",s:1},{d:"Feb 27",h:"HAIM awarded urban mobility contract by 12 U.S. cities",s:1},{d:"Feb 20",h:"Supply chain delays push HM-12 launch to Q3",s:-1}]},
-  GNSS: {n:"Genesis Sciences",          s:"Biotechnology",            b:51.20,  v:.028, t:.0001, iv:.58,bt:1.6, sh:2.2e8,col:"#fbbf24",
+    desc:"Designs VTOL aircraft, commercial drones, and atmospheric research platforms.",
+    news:[{d:"Mar 3",h:"Hummingbird secures FAA certification for HM-9 air taxi",s:1},{d:"Feb 27",h:"HAIM awarded urban mobility contract by 12 U.S. cities",s:1}]},
+  GNSS: {n:"Genesis Sciences",          s:"Biotechnology",            b:51.20, v:.028,t:.0001, iv:.58,bt:1.6, sh:2.2e8,col:"#fbbf24",
     ceo:"Dr. Amara Singh",     f:"2011",emp:"4,200",
-    desc:"Genetics-focused biotech specializing in targeted gene editing and epigenetic therapies. Genesis Sciences researches hereditary disease elimination.",
-    news:[{d:"Mar 4",h:"GNSS gene-edit platform approved for rare disease trial",s:1},{d:"Feb 28",h:"Genesis files 14 new gene therapy patents in Q1",s:1},{d:"Feb 21",h:"Short-seller questions GNSS trial methodology; shares drop 8%",s:-1}]},
-  HDRN: {n:"Hydron Defense",            s:"Defense / Classified",     b:193.40, v:.011, t:.00020,iv:.27,bt:1.15,sh:3.8e8,col:"#64748b",
+    desc:"Genetics-focused biotech specializing in targeted gene editing and epigenetic therapies.",
+    news:[{d:"Mar 4",h:"GNSS gene-edit platform approved for rare disease trial",s:1},{d:"Feb 21",h:"Short-seller questions GNSS trial methodology; shares drop 8%",s:-1}]},
+  HDRN: {n:"Hydron Defense",            s:"Defense / Classified",     b:193.40,v:.011,t:.00020,iv:.27,bt:1.15,sh:3.8e8,col:"#64748b",
     ceo:"[CLASSIFIED]",        f:"[CLASSIFIED]",emp:"[CLASSIFIED]",
-    desc:"A defense contractor with an unusually opaque corporate structure. Financial disclosures meet minimum legal requirements; no executives are named in public filings. Institutional investors have raised governance concerns repeatedly — to no effect.",
-    news:[{d:"Mar 3",h:"Hydron Defense Q4 revenue up 22% — sources undisclosed",s:1},{d:"Feb 24",h:"HDRN new subsidiary incorporated in three offshore jurisdictions",s:-1},{d:"Feb 16",h:"Senate intelligence committee denies requesting classified HDRN briefing",s:0}]},
-  WVLK: {n:"Wavelock Financial",        s:"Financial Services",       b:211.80, v:.009, t:.00012,iv:.21,bt:.75, sh:8.8e8,col:"#f1f5f9",
+    desc:"A defense contractor with an unusually opaque corporate structure. Financial disclosures meet minimum legal requirements; no executives are named in public filings.",
+    news:[{d:"Mar 3",h:"Hydron Defense Q4 revenue up 22% — sources undisclosed",s:1},{d:"Feb 24",h:"HDRN new subsidiary incorporated in three offshore jurisdictions",s:-1}]},
+  WVLK: {n:"Wavelock Financial",        s:"Financial Services",       b:211.80,v:.009,t:.00012,iv:.21,bt:.75, sh:8.8e8,col:"#f1f5f9",
     ceo:"Daniil Marek",        f:"1991",emp:"14,000",
-    desc:"A private equity and real estate holding company with an aggressive acquisition strategy. Controls vast commercial real estate portfolios in 18 major U.S. cities, with interests in media, logistics, and construction.",
-    news:[{d:"Mar 4",h:"Wavelock Financial acquires Midtown commercial bloc for $3.8B",s:1},{d:"Mar 1",h:"WVLK under scrutiny over asset-laundering allegations; case dismissed",s:-1},{d:"Feb 23",h:"Wavelock posts record Q4 real estate income",s:1}]},
-  SPRT: {n:"Sparta Defense Group",      s:"Defense / Weapons",        b:144.60, v:.010, t:.00022,iv:.24,bt:1.0, sh:4.4e8,col:"#94a3b8",
+    desc:"A private equity and real estate holding company with an aggressive acquisition strategy.",
+    news:[{d:"Mar 4",h:"Wavelock Financial acquires Midtown commercial bloc for $3.8B",s:1},{d:"Feb 23",h:"Wavelock posts record Q4 real estate income",s:1}]},
+  SPRT: {n:"Sparta Defense Group",      s:"Defense / Weapons",        b:144.60,v:.010,t:.00022,iv:.24,bt:1.0, sh:4.4e8,col:"#94a3b8",
     ceo:"Marcus Theron",       f:"1971",emp:"38,000",
-    desc:"A weapons systems and armored vehicle manufacturer serving U.S. military and allied nations. Sparta's tracked IFV platform has been ordered by seven countries.",
-    news:[{d:"Mar 2",h:"Sparta Defense receives $2.8B armored vehicle order from NATO member",s:1},{d:"Feb 25",h:"SPRT Q4 earnings beat; international orders up 34%",s:1},{d:"Feb 17",h:"Export license for Sparta's SPG-12 denied by State Department",s:-1}]},
-  TNSK: {n:"Tensile Corp",              s:"Materials Science",        b:67.80,  v:.013, t:.00010,iv:.30,bt:.88, sh:3.3e8,col:"#a5b4fc",
+    desc:"A weapons systems and armored vehicle manufacturer serving U.S. military and allied nations.",
+    news:[{d:"Mar 2",h:"Sparta Defense receives $2.8B armored vehicle order from NATO member",s:1},{d:"Feb 25",h:"SPRT Q4 earnings beat; international orders up 34%",s:1}]},
+  TNSK: {n:"Tensile Corp",              s:"Materials Science",        b:67.80, v:.013,t:.00010,iv:.30,bt:.88, sh:3.3e8,col:"#a5b4fc",
     ceo:"Grace Park",          f:"1965",emp:"22,000",
-    desc:"Advanced materials and composites supplying aerospace, defense, and consumer markets. Tensile's carbon-fiber polymers are used in over 60% of domestic aircraft production.",
-    news:[{d:"Mar 3",h:"Tensile Corp lands $480M aerospace materials deal",s:1},{d:"Feb 26",h:"TNSK unveils ultra-light armor composite; military interest confirmed",s:1}]},
-  SHVN: {n:"Shivan Networks",           s:"Telecommunications",       b:44.12,  v:.015, t:.00008,iv:.33,bt:1.05,sh:5.5e8,col:"#22d3ee",
+    desc:"Advanced materials and composites supplying aerospace, defense, and consumer markets.",
+    news:[{d:"Mar 3",h:"Tensile Corp lands $480M aerospace materials deal",s:1}]},
+  SHVN: {n:"Shivan Networks",           s:"Telecommunications",       b:44.12, v:.015,t:.00008,iv:.33,bt:1.05,sh:5.5e8,col:"#22d3ee",
     ceo:"Jin Nakamura",        f:"2004",emp:"11,200",
-    desc:"A 5G/6G infrastructure provider building private wireless networks for enterprise and government clients. Deployed in 40 U.S. metro areas.",
-    news:[{d:"Mar 2",h:"Shivan Networks wins 6G spectrum auction for three major markets",s:1},{d:"Feb 21",h:"SHVN posts Q4 subscriber growth of 18%",s:1}]},
-  RVLT: {n:"Revault Technologies",      s:"FinTech",                  b:55.30,  v:.020, t:.00012,iv:.44,bt:1.35,sh:2.4e8,col:"#818cf8",
+    desc:"A 5G/6G infrastructure provider building private wireless networks for enterprise and government clients.",
+    news:[{d:"Mar 2",h:"Shivan Networks wins 6G spectrum auction for three major markets",s:1}]},
+  RVLT: {n:"Revault Technologies",      s:"FinTech",                  b:55.30, v:.020,t:.00012,iv:.44,bt:1.35,sh:2.4e8,col:"#818cf8",
     ceo:"Maya Osei",           f:"2014",emp:"5,600",
-    desc:"AI-driven investment platforms, neo-banking, and blockchain asset management. Revault's consumer app has 12 million active users.",
-    news:[{d:"Mar 4",h:"Revault reaches 12M users; prepares IPO secondary offering",s:1},{d:"Feb 27",h:"RVLT blockchain custody product approved by SEC",s:1},{d:"Feb 20",h:"Data breach affects 200K Revault accounts; shares -7%",s:-1}]},
-  MNRL: {n:"Mineral Frontier Mining",   s:"Mining",                   b:28.44,  v:.020, t:.00005,iv:.42,bt:1.15,sh:6.9e8,col:"#d97706",
+    desc:"AI-driven investment platforms, neo-banking, and blockchain asset management.",
+    news:[{d:"Mar 4",h:"Revault reaches 12M users; prepares IPO secondary offering",s:1},{d:"Feb 20",h:"Data breach affects 200K Revault accounts; shares -7%",s:-1}]},
+  MNRL: {n:"Mineral Frontier Mining",   s:"Mining",                   b:28.44, v:.020,t:.00005,iv:.42,bt:1.15,sh:6.9e8,col:"#d97706",
     ceo:"Tobias Harken",       f:"1949",emp:"18,500",
-    desc:"Rare-earth and lithium mining with operations in Nevada, Montana, and four international sites. Critical supplier to battery and semiconductor manufacturers.",
-    news:[{d:"Mar 2",h:"New lithium site in Nevada cleared for full extraction",s:1},{d:"Feb 24",h:"MNRL Q4 rare-earth revenues up 31% on battery demand",s:1}]},
-  PTHR: {n:"Panther Resources Ltd",     s:"Mining / Materials",       b:91.25,  v:.012, t:.00015,iv:.28,bt:.92, sh:3.1e8,col:"#7c3aed",
+    desc:"Rare-earth and lithium mining with operations in Nevada, Montana, and four international sites.",
+    news:[{d:"Mar 2",h:"New lithium site in Nevada cleared for full extraction",s:1}]},
+  PTHR: {n:"Panther Resources Ltd",     s:"Mining / Materials",       b:91.25, v:.012,t:.00015,iv:.28,bt:.92, sh:3.1e8,col:"#7c3aed",
     ceo:"N'Jobu Achebe",       f:"1956",emp:"27,000",
-    desc:"A diversified mining conglomerate with significant holdings in central Africa and rare mineral deposits. Holds patents on several advanced ore extraction processes.",
-    news:[{d:"Mar 3",h:"Panther Resources posts record quarterly extraction output",s:1},{d:"Feb 26",h:"PTHR environmental compliance audit passes all standards",s:1},{d:"Feb 19",h:"Political instability in Wakari Province disrupts PTHR operations",s:-1}]},
+    desc:"A diversified mining conglomerate with significant holdings in central Africa and rare mineral deposits.",
+    news:[{d:"Mar 3",h:"Panther Resources posts record quarterly extraction output",s:1},{d:"Feb 19",h:"Political instability in Wakari Province disrupts PTHR operations",s:-1}]},
 };
 
-// ── GENERATOR: ~280 additional original companies ──
 function generateCompanies(){
   const rng=mkRng(0xDEADBEEF);
   const ri=a=>a[Math.floor(rng()*a.length)];
@@ -311,24 +284,24 @@ function generateCompanies(){
   const MID=["tech","med","bio","geo","astro","nano","net","sys","core","data","lab","sci","gen","pharm","cap","fin","res","ind","al","ron","ex","ix","ax","ia","ar","ic","ara","era","eon","ion","ium","in","en","us","os"];
   const SUF=["Industries","Systems","Technologies","Corp","Inc","Holdings","Group","Solutions","Networks","Dynamics","Labs","Research","Sciences","Engineering","Partners","Capital","Ventures","Enterprises","International","Global","Pharma","Bio","Tech","Med","Energy","Finance","Defense","Aerospace","Digital","Health","Materials","Logistics","Analytics","Robotics","Genomics","Therapeutics"];
   const SECTORS=[
-    {s:"Technology",       bl:50,  bh:280, vl:.012,vh:.028,tl:.0001,th:.0003,ivl:.28,ivh:.52},
-    {s:"Defense",          bl:80,  bh:350, vl:.008,vh:.014,tl:.0001,th:.0002,ivl:.18,ivh:.30},
-    {s:"Medical",          bl:40,  bh:220, vl:.010,vh:.018,tl:.0000,th:.0002,ivl:.22,ivh:.38},
-    {s:"Biotechnology",    bl:8,   bh:90,  vl:.024,vh:.048,tl:-.0002,th:.0003,ivl:.45,ivh:.85},
-    {s:"Clean Energy",     bl:20,  bh:90,  vl:.010,vh:.018,tl:-.0001,th:.0001,ivl:.25,ivh:.40},
-    {s:"Oil & Gas",        bl:30,  bh:120, vl:.012,vh:.020,tl:-.0002,th:.0002,ivl:.28,ivh:.44},
-    {s:"Financial Services",bl:30, bh:210, vl:.006,vh:.012,tl:.0001, th:.0002,ivl:.15,ivh:.24},
-    {s:"Industrial",       bl:40,  bh:200, vl:.008,vh:.014,tl:.0001, th:.0002,ivl:.18,ivh:.28},
-    {s:"Consumer",         bl:15,  bh:130, vl:.012,vh:.022,tl:.0000, th:.0002,ivl:.20,ivh:.36},
-    {s:"Telecommunications",bl:20, bh:90,  vl:.009,vh:.015,tl:.0000, th:.0001,ivl:.18,ivh:.30},
-    {s:"Mining",           bl:10,  bh:90,  vl:.015,vh:.028,tl:.0000, th:.0002,ivl:.30,ivh:.50},
-    {s:"Real Estate",      bl:20,  bh:90,  vl:.007,vh:.012,tl:.0000, th:.0001,ivl:.15,ivh:.24},
-    {s:"Pharmaceutical",   bl:20,  bh:200, vl:.014,vh:.026,tl:.0001, th:.0002,ivl:.28,ivh:.48},
-    {s:"Aerospace",        bl:60,  bh:320, vl:.009,vh:.016,tl:.0001, th:.0003,ivl:.20,ivh:.32},
-    {s:"FinTech",          bl:20,  bh:120, vl:.018,vh:.034,tl:.0001, th:.0003,ivl:.35,ivh:.65},
-    {s:"Cybersecurity",    bl:30,  bh:160, vl:.014,vh:.026,tl:.0001, th:.0003,ivl:.30,ivh:.55},
-    {s:"Logistics",        bl:25,  bh:110, vl:.009,vh:.016,tl:.0000, th:.0002,ivl:.18,ivh:.30},
-    {s:"Materials Science",bl:35,  bh:160, vl:.010,vh:.018,tl:.0001, th:.0002,ivl:.22,ivh:.36},
+    {s:"Technology",bl:50,bh:280,vl:.012,vh:.028,tl:.0001,th:.0003,ivl:.28,ivh:.52},
+    {s:"Defense",bl:80,bh:350,vl:.008,vh:.014,tl:.0001,th:.0002,ivl:.18,ivh:.30},
+    {s:"Medical",bl:40,bh:220,vl:.010,vh:.018,tl:.0000,th:.0002,ivl:.22,ivh:.38},
+    {s:"Biotechnology",bl:8,bh:90,vl:.024,vh:.048,tl:-.0002,th:.0003,ivl:.45,ivh:.85},
+    {s:"Clean Energy",bl:20,bh:90,vl:.010,vh:.018,tl:-.0001,th:.0001,ivl:.25,ivh:.40},
+    {s:"Oil & Gas",bl:30,bh:120,vl:.012,vh:.020,tl:-.0002,th:.0002,ivl:.28,ivh:.44},
+    {s:"Financial Services",bl:30,bh:210,vl:.006,vh:.012,tl:.0001,th:.0002,ivl:.15,ivh:.24},
+    {s:"Industrial",bl:40,bh:200,vl:.008,vh:.014,tl:.0001,th:.0002,ivl:.18,ivh:.28},
+    {s:"Consumer",bl:15,bh:130,vl:.012,vh:.022,tl:.0000,th:.0002,ivl:.20,ivh:.36},
+    {s:"Telecommunications",bl:20,bh:90,vl:.009,vh:.015,tl:.0000,th:.0001,ivl:.18,ivh:.30},
+    {s:"Mining",bl:10,bh:90,vl:.015,vh:.028,tl:.0000,th:.0002,ivl:.30,ivh:.50},
+    {s:"Real Estate",bl:20,bh:90,vl:.007,vh:.012,tl:.0000,th:.0001,ivl:.15,ivh:.24},
+    {s:"Pharmaceutical",bl:20,bh:200,vl:.014,vh:.026,tl:.0001,th:.0002,ivl:.28,ivh:.48},
+    {s:"Aerospace",bl:60,bh:320,vl:.009,vh:.016,tl:.0001,th:.0003,ivl:.20,ivh:.32},
+    {s:"FinTech",bl:20,bh:120,vl:.018,vh:.034,tl:.0001,th:.0003,ivl:.35,ivh:.65},
+    {s:"Cybersecurity",bl:30,bh:160,vl:.014,vh:.026,tl:.0001,th:.0003,ivl:.30,ivh:.55},
+    {s:"Logistics",bl:25,bh:110,vl:.009,vh:.016,tl:.0000,th:.0002,ivl:.18,ivh:.30},
+    {s:"Materials Science",bl:35,bh:160,vl:.010,vh:.018,tl:.0001,th:.0002,ivl:.22,ivh:.36},
   ];
   const COLS=["#e8b84b","#f59e0b","#34d399","#60a5fa","#a78bfa","#f472b6","#22c55e","#ef4444","#38bdf8","#c084fc","#6ee7b7","#fb923c","#84cc16","#fbbf24","#64748b","#94a3b8","#818cf8","#22d3ee","#d97706","#7c3aed"];
   const res={};let att=0;
@@ -336,24 +309,18 @@ function generateCompanies(){
     att++;
     const sec=ri(SECTORS),pre=ri(PRE),mid=ri(MID),suf=ri(SUF);
     const name=`${pre}${mid} ${suf}`;
-    if(usedN.has(name))continue;
-    usedN.add(name);
+    if(usedN.has(name))continue;usedN.add(name);
     const words=name.toUpperCase().split(/\s+/);
     let ticker=words.map(w=>w[0]).join('').slice(0,4);
     if(words.length===1)ticker=words[0].slice(0,4);
     let sfx='A';
     while(usedT.has(ticker)&&sfx<='Z'){ticker=ticker.slice(0,3)+sfx;sfx=String.fromCharCode(sfx.charCodeAt(0)+1);}
-    if(usedT.has(ticker))continue;
-    usedT.add(ticker);
-    const base=+(rf(sec.bl,sec.bh)).toFixed(2);
-    const vol=+(rf(sec.vl,sec.vh)).toFixed(4);
-    const trend=+(rf(sec.tl,sec.th)).toFixed(6);
-    const iv=+(rf(sec.ivl,sec.ivh)).toFixed(2);
-    const beta=+(rf(0.5,2.0)).toFixed(2);
-    const shares=Math.floor(rf(5e7,3e9)/1e6)*1e6;
-    res[ticker]={n:name,s:sec.s,b:base,v:vol,t:trend,iv,bt:beta,sh:shares,col:ri(COLS),ceo:"—",f:"—",emp:"—",
-      desc:`${name} operates in the ${sec.s} sector of the NMX. Market data and price discovery via the Nexus Market Exchange.`,
-      news:[{d:"Mar 4",h:`${name} reports quarterly results`,s:Math.random()>.5?1:-1},{d:"Feb 28",h:`Analyst covers ${ticker} with ${Math.random()>.5?"BUY":"HOLD"} rating`,s:Math.random()>.5?1:0}]};
+    if(usedT.has(ticker))continue;usedT.add(ticker);
+    res[ticker]={n:name,s:sec.s,b:+(rf(sec.bl,sec.bh)).toFixed(2),v:+(rf(sec.vl,sec.vh)).toFixed(4),
+      t:+(rf(sec.tl,sec.th)).toFixed(6),iv:+(rf(sec.ivl,sec.ivh)).toFixed(2),
+      bt:+(rf(0.5,2.0)).toFixed(2),sh:Math.floor(rf(5e7,3e9)/1e6)*1e6,col:ri(COLS),ceo:"—",f:"—",emp:"—",
+      desc:`${name} operates in the ${sec.s} sector of the NMX.`,
+      news:[{d:"Mar 4",h:`${name} reports quarterly results`,s:Math.random()>.5?1:-1},{d:"Feb 28",h:`Analyst covers ${ticker} with ${Math.random()>.5?"BUY":"HOLD"} rating`,s:0}]};
   }
   return res;
 }
@@ -361,43 +328,31 @@ function generateCompanies(){
 const ALL={...COMPANIES,...generateCompanies()};
 const SYMS=Object.keys(ALL);
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 //  PRICE ENGINE
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 const priceRng=mkRng(Date.now());
-const prices={};
-const opens={};
+const prices={};const opens={};
 SYMS.forEach(s=>{prices[s]=ALL[s].b;opens[s]=ALL[s].b;});
-
-function tick(){
-  SYMS.forEach(s=>{
-    const co=ALL[s];
-    prices[s]=Math.max(0.01,+(prices[s]*(1+co.t)+(priceRng()-0.49)*prices[s]*co.v).toFixed(2));
-  });
-}
+function tick(){SYMS.forEach(s=>{const co=ALL[s];prices[s]=Math.max(0.01,+(prices[s]*(1+co.t)+(priceRng()-0.49)*prices[s]*co.v).toFixed(2));});}
 
 function genCandles(sym,n=90){
-  const co=ALL[sym];
-  const r=mkRng(sym.split('').reduce((a,c)=>a+c.charCodeAt(0),0));
+  const co=ALL[sym];const r=mkRng(sym.split('').reduce((a,c)=>a+c.charCodeAt(0),0));
   let p=co.b*(0.82+r()*0.06);
   return Array.from({length:n},(_,i)=>{
-    const t=i/n;
-    let drift=co.v*0.18;
+    const t=i/n;let drift=co.v*0.18;
     if(co.recovery&&t>co.recovery)drift=co.v*2.2;
-    const open=p;
-    const mv=(r()-0.48)*p*co.v*4+p*drift*0.06;
-    const close=Math.max(open*0.85,open+mv);
+    const open=p,mv=(r()-0.48)*p*co.v*4+p*drift*0.06,close=Math.max(open*0.85,open+mv);
     const rng2=Math.abs(close-open)*(0.4+r()*1.1);
-    const high=Math.max(open,close)+r()*rng2*0.55;
-    const low=Math.min(open,close)-r()*rng2*0.35;
+    const high=Math.max(open,close)+r()*rng2*0.55,low=Math.min(open,close)-r()*rng2*0.35;
     p=close;
     return{o:+open.toFixed(2),h:+Math.max(high,open,close).toFixed(2),l:+Math.max(0.01,Math.min(low,open,close)).toFixed(2),c:+close.toFixed(2),v:Math.floor(5e4+r()*1.4e6),i};
   }).map((c,i,a)=>i===a.length-1?{...c,c:co.b}:c);
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 //  UTILS
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 const uid=()=>Math.random().toString(36).slice(2,9);
 const fmt$=(n,d=2)=>{const a=Math.abs(n||0),s=(n||0)<0?"-":"";return a>=1e9?`${s}$${(a/1e9).toFixed(2)}B`:a>=1e6?`${s}$${(a/1e6).toFixed(2)}M`:a>=1e3?`${s}$${(a/1e3).toFixed(1)}K`:`${s}$${a.toFixed(d)}`;};
 const fmtN=n=>(n||0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -405,165 +360,252 @@ const pctS=n=>`${n>=0?"+":""}${n.toFixed(2)}%`;
 const pct=(a,b)=>b===0?0:((a-b)/b)*100;
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 //  APP STATE
-// ═══════════════════════════════════════════════
-let db=initDB();
-let currentUser=null;
-let selectedSym=SYMS[0];
-let chartTab='CHART';
-let posTab='POSITIONS';
-let sidebarFilter='ALL';
-let sidebarSearch='';
-let orderDir='buy';
-let orderShares='';
-let orderMsg=null;
-let adminInputs={};
-let loginMode='login';
-let loginErr='';
+// ═══════════════════════════════════════════════════════════
+let currentUser = null;      // Supabase auth user
+let currentProfile = null;   // profiles row
+let allProfiles = [];        // for admin panel
+let userPositions = {};      // { SYM: {shares, avg_price} }
+let userTransactions = [];   // array of tx rows
 
-// ═══════════════════════════════════════════════
-//  RENDER ENGINE
-// ═══════════════════════════════════════════════
-function render(){
-  const root=document.getElementById('root');
-  if(!currentUser){
-    root.innerHTML=renderLogin();
-    bindLogin();
-    return;
-  }
-  root.innerHTML=renderApp();
-  bindApp();
+let selectedSym = SYMS[0];
+let chartTab = 'CHART';
+let posTab = 'POSITIONS';
+let sidebarFilter = 'ALL';
+let sidebarSearch = '';
+let orderDir = 'buy';
+let orderShares = '';
+let orderMsg = null;
+let adminInputs = {};
+let authMode = 'login';      // 'login' | 'register'
+let authMsg = null;
+let authLoading = false;
+let appLoading = true;
+
+// ═══════════════════════════════════════════════════════════
+//  SUPABASE DATA LAYER
+// ═══════════════════════════════════════════════════════════
+async function loadUserData(userId) {
+  const [profRes, posRes, txRes] = await Promise.all([
+    sb.from('profiles').select('*').eq('id', userId).single(),
+    sb.from('positions').select('*').eq('user_id', userId),
+    sb.from('transactions').select('*').eq('user_id', userId).order('created_at', {ascending: false}).limit(100)
+  ]);
+  currentProfile = profRes.data;
+  userPositions = {};
+  (posRes.data || []).forEach(p => { if(p.shares > 0) userPositions[p.symbol] = {shares: p.shares, avg_price: p.avg_price, id: p.id}; });
+  userTransactions = txRes.data || [];
 }
 
-// ── LOGIN ──
-function renderLogin(){
+async function loadAllProfiles() {
+  const { data } = await sb.from('profiles').select('*').order('created_at');
+  allProfiles = data || [];
+}
+
+async function savePosition(symbol, shares, avgPrice) {
+  const existing = userPositions[symbol];
+  if (shares <= 0) {
+    if (existing?.id) await sb.from('positions').delete().eq('id', existing.id);
+    delete userPositions[symbol];
+  } else {
+    if (existing?.id) {
+      await sb.from('positions').update({shares, avg_price: avgPrice, updated_at: new Date()}).eq('id', existing.id);
+    } else {
+      const { data } = await sb.from('positions').insert({user_id: currentUser.id, symbol, shares, avg_price: avgPrice}).select().single();
+      if(data) userPositions[symbol] = {shares, avg_price: avgPrice, id: data.id};
+    }
+    if(userPositions[symbol]) { userPositions[symbol].shares = shares; userPositions[symbol].avg_price = avgPrice; }
+  }
+}
+
+async function saveCash(amount) {
+  await sb.from('profiles').update({cash: amount}).eq('id', currentUser.id);
+  currentProfile.cash = amount;
+}
+
+async function saveTransaction(type, symbol, shares, price, total) {
+  const { data } = await sb.from('transactions').insert({
+    user_id: currentUser.id, type, symbol, shares, price, total
+  }).select().single();
+  if(data) userTransactions.unshift(data);
+}
+
+async function adminUpdateCash(userId, amount) {
+  await sb.from('profiles').update({cash: amount}).eq('id', userId);
+  const p = allProfiles.find(x => x.id === userId);
+  if(p) p.cash = amount;
+}
+
+async function adminSetAdmin(userId, isAdmin) {
+  await sb.from('profiles').update({is_admin: isAdmin}).eq('id', userId);
+  const p = allProfiles.find(x => x.id === userId);
+  if(p) p.is_admin = isAdmin;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  AUTH
+// ═══════════════════════════════════════════════════════════
+async function doLogin(email, password) {
+  authLoading = true; authMsg = null; render();
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  authLoading = false;
+  if (error) { authMsg = {type:'err', text: error.message}; render(); return; }
+  currentUser = data.user;
+  await loadUserData(currentUser.id);
+  appLoading = false;
+  render();
+}
+
+async function doRegister(email, password, username, displayName) {
+  authLoading = true; authMsg = null; render();
+  // Check username not taken
+  const { data: existing } = await sb.from('profiles').select('id').eq('username', username.toLowerCase()).maybeSingle();
+  if (existing) { authLoading = false; authMsg = {type:'err', text:'Username already taken.'}; render(); return; }
+  const { data, error } = await sb.auth.signUp({
+    email, password,
+    options: { data: { username: username.toLowerCase(), display_name: displayName, is_admin: false, cash: 100000 } }
+  });
+  authLoading = false;
+  if (error) { authMsg = {type:'err', text: error.message}; render(); return; }
+  // Some Supabase configs require email confirmation
+  if (data.user && !data.session) {
+    authMsg = {type:'ok', text:'Account created! Check your email to confirm, then sign in.'}; render(); return;
+  }
+  if (data.session) {
+    currentUser = data.user;
+    // Brief wait for trigger to create profile
+    await new Promise(r => setTimeout(r, 800));
+    await loadUserData(currentUser.id);
+    appLoading = false; render();
+  }
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  currentUser = null; currentProfile = null; userPositions = {}; userTransactions = [];
+  authMode = 'login'; authMsg = null;
+  render();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════════
+function render() {
+  const root = document.getElementById('root');
+  if (appLoading && !currentUser) { /* keep loading screen */ return; }
+  if (!currentUser) { root.innerHTML = renderAuth(); bindAuth(); return; }
+  root.innerHTML = renderApp(); bindApp();
+}
+
+// ── AUTH SCREEN ──
+function renderAuth() {
+  const isLogin = authMode === 'login';
   return `
-<div class="login-wrap">
-  <div class="login-box">
-    <div class="login-logo">
-      <div class="login-sub">NEXUS MARKET EXCHANGE</div>
-      <div class="login-main">NMX<span>Trade</span></div>
-      <div class="login-line"></div>
+<div class="auth-wrap">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="auth-sub">NEXUS MARKET EXCHANGE</div>
+      <div class="auth-main">NMX<span>Trade</span></div>
+      <div class="auth-line"></div>
     </div>
-    ${loginMode==='login'?`
-    <div class="login-form">
-      <div>
-        <div class="login-lbl">USERNAME</div>
-        <input id="li-user" placeholder="username" autocomplete="username"/>
+    ${authMsg ? `<div class="auth-${authMsg.type}" style="margin-bottom:14px">${esc(authMsg.text)}</div>` : ''}
+    ${isLogin ? `
+    <div class="auth-form">
+      <div><div class="auth-lbl">EMAIL</div><input id="a-email" type="email" placeholder="your@email.com" autocomplete="email"/></div>
+      <div><div class="auth-lbl">PASSWORD</div><input id="a-pass" type="password" placeholder="password" autocomplete="current-password"/></div>
+      <button class="auth-submit" id="a-btn" ${authLoading?'disabled':''}>
+        ${authLoading ? 'SIGNING IN...' : 'SIGN IN'}
+      </button>
+      <div class="auth-divider">or</div>
+      <div class="auth-note">
+        <span style="color:var(--amber);letter-spacing:.08em">⚙ ADMIN ACCESS</span><br/>
+        Username: <b style="color:var(--t0)">NMX_ROOT</b> &nbsp; Password: <b style="color:var(--t0)">Nx#8mQ2$vL!</b><br/>
+        <span style="color:var(--t4);font-size:8px">Use admin email registered in your Supabase dashboard</span>
       </div>
-      <div>
-        <div class="login-lbl">PASSWORD</div>
-        <input id="li-pass" type="password" placeholder="password" autocomplete="current-password"/>
-      </div>
-      ${loginErr?`<div class="login-err">${esc(loginErr)}</div>`:''}
-      <button class="login-submit" id="li-btn">SIGN IN</button>
-      <div class="login-note"><span style="color:var(--amber);letter-spacing:.08em">⚙ ADMIN ACCESS</span><br/>Username: <b style="color:var(--t0)">NMX_ROOT</b> &nbsp; Password: <b style="color:var(--t0)">Nx#8mQ2$vL!</b><br/><span style="color:var(--t4);margin-top:4px;display:block">Demo: <b>ezra</b>/bee2026 &nbsp;·&nbsp; <b>graham</b>/sterling2026 &nbsp;·&nbsp; <b>bartholomew</b>/bcorp2026</span></div>
-      <div class="login-toggle">No account? <a id="li-toggle">Register</a></div>
+      <div class="auth-toggle">No account? <a id="a-toggle">Create one — it's free</a></div>
     </div>
     ` : `
-    <div class="login-form">
-      <div>
-        <div class="login-lbl">USERNAME</div>
-        <input id="reg-user" placeholder="choose a username"/>
+    <div class="auth-form">
+      <div><div class="auth-lbl">USERNAME</div><input id="a-user" placeholder="choose a username (no spaces)" autocomplete="off"/></div>
+      <div><div class="auth-lbl">DISPLAY NAME</div><input id="a-name" placeholder="your name"/></div>
+      <div><div class="auth-lbl">EMAIL</div><input id="a-email" type="email" placeholder="your@email.com" autocomplete="email"/></div>
+      <div><div class="auth-lbl">PASSWORD</div><input id="a-pass" type="password" placeholder="at least 6 characters" autocomplete="new-password"/></div>
+      <button class="auth-submit" id="a-btn" ${authLoading?'disabled':''}>
+        ${authLoading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT — FREE'}
+      </button>
+      <div class="auth-note" style="font-size:9px;color:var(--t4)">
+        New accounts start with <b style="color:var(--gold)">$100,000</b> in fictional NMX cash. Your account works on any device.
       </div>
-      <div>
-        <div class="login-lbl">DISPLAY NAME</div>
-        <input id="reg-name" placeholder="your name"/>
-      </div>
-      <div>
-        <div class="login-lbl">PASSWORD</div>
-        <input id="reg-pass" type="password" placeholder="choose a password"/>
-      </div>
-      ${loginErr?`<div class="login-err">${esc(loginErr)}</div>`:''}
-      <button class="login-submit" id="reg-btn">CREATE ACCOUNT</button>
-      <div class="login-toggle">Have an account? <a id="reg-toggle">Sign in</a></div>
+      <div class="auth-toggle">Already registered? <a id="a-toggle">Sign in</a></div>
     </div>
     `}
-    <div class="login-footer">NMXTrade v5.0 · Nexus Market Exchange · Fictional AU</div>
+    <div class="auth-footer">NMXTrade · Nexus Market Exchange · Fictional Marvel AU</div>
   </div>
 </div>`;
 }
 
-function bindLogin(){
-  if(loginMode==='login'){
-    const doLogin=()=>{
-      const u=document.getElementById('li-user').value.trim().toLowerCase();
-      const p=document.getElementById('li-pass').value;
-      if(!db.users[u]){loginErr='Unknown username.';render();return;}
-      if(db.users[u].p!==p){loginErr='Incorrect password.';render();return;}
-      loginErr='';currentUser=u;render();
-    };
-    document.getElementById('li-btn').onclick=doLogin;
-    document.getElementById('li-pass').onkeydown=e=>{if(e.key==='Enter')doLogin();};
-    document.getElementById('li-toggle').onclick=()=>{loginMode='register';loginErr='';render();};
-  } else {
-    document.getElementById('reg-btn').onclick=()=>{
-      const u=document.getElementById('reg-user').value.trim().toLowerCase();
-      const name=document.getElementById('reg-name').value.trim();
-      const p=document.getElementById('reg-pass').value;
-      if(!u||u.length<2){loginErr='Username must be at least 2 characters.';render();return;}
-      if(db.users[u]){loginErr='Username already taken.';render();return;}
-      if(!name){loginErr='Display name required.';render();return;}
-      if(p.length<4){loginErr='Password must be at least 4 characters.';render();return;}
-      db.users[u]={u,p,name,isAdmin:false,cash:100000,pos:{},txs:[],joined:Date.now()};
-      saveDB(db);loginErr='';loginMode='login';currentUser=u;render();
-    };
-    document.getElementById('reg-toggle').onclick=()=>{loginMode='login';loginErr='';render();};
-  }
+function bindAuth() {
+  document.getElementById('a-toggle').onclick = () => { authMode = authMode==='login'?'register':'login'; authMsg=null; render(); };
+  const btn = document.getElementById('a-btn');
+  if (!btn) return;
+
+  const go = async () => {
+    const email = (document.getElementById('a-email')?.value||'').trim();
+    const pass = (document.getElementById('a-pass')?.value||'');
+    if (authMode === 'login') {
+      if (!email || !pass) { authMsg={type:'err',text:'Email and password required.'}; render(); return; }
+      await doLogin(email, pass);
+    } else {
+      const user = (document.getElementById('a-user')?.value||'').trim().toLowerCase().replace(/\s+/g,'');
+      const name = (document.getElementById('a-name')?.value||'').trim();
+      if (!user || user.length < 2) { authMsg={type:'err',text:'Username must be at least 2 characters.'}; render(); return; }
+      if (!name) { authMsg={type:'err',text:'Display name required.'}; render(); return; }
+      if (!email) { authMsg={type:'err',text:'Email required.'}; render(); return; }
+      if (pass.length < 6) { authMsg={type:'err',text:'Password must be at least 6 characters.'}; render(); return; }
+      await doRegister(email, pass, user, name);
+    }
+  };
+
+  btn.onclick = go;
+  document.getElementById('a-pass').onkeydown = e => { if(e.key==='Enter') go(); };
 }
 
 // ── MAIN APP ──
-function renderApp(){
-  const user=db.users[currentUser];
-  const co=ALL[selectedSym];
-  const px=prices[selectedSym];
-  const op=opens[selectedSym];
-  const chg=pct(px,op);
-  const isAdmin=user.isAdmin;
+function renderApp() {
+  const user = currentProfile;
+  if (!user) return `<div class="loading-screen"><div class="loading-logo">NMX<span>Trade</span></div><div class="loading-bar"><div class="loading-fill"></div></div><div class="loading-txt">LOADING PROFILE</div></div>`;
 
-  // NMX Index (avg of top 20)
-  const topSyms=['STI','BCII','BCOR','NDX','VTGS','MREN','CSTL','APBX','RXON','HAIM','GNSS','HDRN','SPRT','TNSK','SHVN','RVLT','MNRL','PTHR','WVLK','NDX'];
-  const nmxPx=topSyms.reduce((a,s)=>a+(prices[s]||0),0)/topSyms.length;
-  const nmxChg=pct(nmxPx,topSyms.reduce((a,s)=>a+(opens[s]||0),0)/topSyms.length);
+  const co = ALL[selectedSym];
+  const px = prices[selectedSym];
+  const op = opens[selectedSym];
+  const chg = pct(px, op);
+  const isAdmin = user.is_admin;
 
-  // Tape
-  const tapeSyms=SYMS.slice(0,40);
-  const tapeHtml=tapeSyms.map(s=>{
-    const p=prices[s],o=opens[s],c=pct(p,o);
-    const cls=c>=0?'up':'dn';
+  const topS = ['STI','BCII','BCOR','NDX','VTGS','MREN','CSTL','APBX','RXON','HAIM','GNSS','HDRN','SPRT','TNSK','SHVN','RVLT','MNRL','PTHR','WVLK'];
+  const nmxPx = topS.reduce((a,s)=>a+(prices[s]||0),0)/topS.length;
+  const nmxChg = pct(nmxPx, topS.reduce((a,s)=>a+(opens[s]||0),0)/topS.length);
+
+  const tapeHtml = SYMS.slice(0,40).map(s=>{
+    const p=prices[s],o=opens[s],c=pct(p,o),cls=c>=0?'up':'dn';
     return `<span class="ti ${cls}"><b>${s}</b> ${fmtN(p)} <span class="${cls}">${pctS(c)}</span></span>`;
   }).join('');
 
-  // Sidebar
-  let wlSyms=SYMS;
-  if(sidebarSearch)wlSyms=wlSyms.filter(s=>s.includes(sidebarSearch.toUpperCase())||ALL[s].n.toUpperCase().includes(sidebarSearch.toUpperCase()));
-  if(sidebarFilter!=='ALL')wlSyms=wlSyms.filter(s=>ALL[s].s.toLowerCase().includes(sidebarFilter.toLowerCase()));
-  const wlHtml=wlSyms.slice(0,200).map(s=>{
-    const p=prices[s],o=opens[s],c=pct(p,o);
-    const cls=c>=0?'up':'dn';
-    return `<div class="wl-row${s===selectedSym?' active':''}" data-sym="${s}">
-      <div class="wl-top"><span class="wl-sym" style="color:${ALL[s].col}">${s}</span><span class="wl-pct ${cls}">${pctS(c)}</span></div>
-      <div class="wl-price">$${fmtN(p)}</div>
-      <div class="wl-name">${esc(ALL[s].n)}</div>
-    </div>`;
+  let wlSyms = SYMS;
+  if(sidebarSearch) wlSyms=wlSyms.filter(s=>s.includes(sidebarSearch.toUpperCase())||ALL[s].n.toUpperCase().includes(sidebarSearch.toUpperCase()));
+  if(sidebarFilter!=='ALL') wlSyms=wlSyms.filter(s=>ALL[s].s.toLowerCase().includes(sidebarFilter.toLowerCase()));
+  const wlHtml = wlSyms.slice(0,200).map(s=>{
+    const p=prices[s],o=opens[s],c=pct(p,o),cls=c>=0?'up':'dn';
+    return `<div class="wl-row${s===selectedSym?' active':''}" data-sym="${s}"><div class="wl-top"><span class="wl-sym" style="color:${ALL[s].col}">${s}</span><span class="wl-pct ${cls}">${pctS(c)}</span></div><div class="wl-price">$${fmtN(p)}</div><div class="wl-name">${esc(ALL[s].n)}</div></div>`;
   }).join('');
 
-  // Center / main chart area
-  let centerHtml='';
-  if(isAdmin&&chartTab==='ADMIN'){
-    centerHtml=renderAdmin();
-  } else if(chartTab==='PORTFOLIO'){
-    centerHtml=renderPortfolio(user);
-  } else {
-    centerHtml=renderChart(co,px,chg);
-  }
+  let centerHtml = '';
+  if (isAdmin && chartTab==='ADMIN') centerHtml = renderAdmin();
+  else if (chartTab==='PORTFOLIO') centerHtml = renderPortfolio();
+  else centerHtml = renderChart(co, px, chg);
 
-  // Positions
-  const posHtml=renderPositions(user);
-
-  // Order panel
-  const orderHtml=renderOrder(co,px,user);
+  const posHtml = renderPositions();
+  const orderHtml = renderOrder(co, px);
 
   return `
 <div id="navbar">
@@ -576,7 +618,7 @@ function renderApp(){
   </div>
   <div class="nav-right">
     <div class="nav-cash">CASH <b>$${fmtN(user.cash)}</b></div>
-    <div class="nav-user">${esc(user.name)}</div>
+    <div class="nav-user">${esc(user.display_name)}</div>
     ${isAdmin?`<button class="nav-btn nav-admin" id="nav-admin-btn">${chartTab==='ADMIN'?'◀ MARKET':'⚙ ADMIN'}</button>`:''}
     <button class="nav-btn" id="nav-port-btn">${chartTab==='PORTFOLIO'?'◀ MARKET':'▤ PORTFOLIO'}</button>
     <button class="nav-btn" id="nav-logout">SIGN OUT</button>
@@ -586,9 +628,7 @@ function renderApp(){
 <div id="body">
   <div id="sidebar">
     <div class="sb-search"><input id="sb-q" placeholder="Search..." value="${esc(sidebarSearch)}"/></div>
-    <div class="sb-filter">
-      ${['ALL','Tech','Defense','Bio','Energy','Finance','Mining'].map(f=>`<button class="sf-btn${sidebarFilter===f?' active':''}" data-f="${f}">${f}</button>`).join('')}
-    </div>
+    <div class="sb-filter">${['ALL','Tech','Defense','Bio','Energy','Finance','Mining'].map(f=>`<button class="sf-btn${sidebarFilter===f?' active':''}" data-f="${f}">${f}</button>`).join('')}</div>
     <div class="wl-hdr">COMPANIES · ${SYMS.length}</div>
     <div id="watchlist">${wlHtml}</div>
   </div>
@@ -608,9 +648,7 @@ function renderApp(){
         <span>IV <span>${(co.iv*100).toFixed(0)}%</span></span>
       </div>
     </div>
-    <div class="chart-tabs">
-      ${['CHART','NEWS','INFO'].map(t=>`<button class="ct-btn${chartTab===t?' active':''}" data-ct="${t}">${t}</button>`).join('')}
-    </div>
+    <div class="chart-tabs">${['CHART','NEWS','INFO'].map(t=>`<button class="ct-btn${chartTab===t?' active':''}" data-ct="${t}">${t}</button>`).join('')}</div>
     <div id="chart-area">${centerHtml}</div>
     `}
     <div id="positions">${posHtml}</div>
@@ -628,22 +666,15 @@ function renderChart(co,px,chg){
   const yS=(H-pad.t-pad.b)/(yMax-yMin);
   const yP=v=>pad.t+(yMax-v)*yS;
   const xP=i=>pad.l+i*(cW+1)+cW/2;
-  // Price line overlay (last real-time price)
-  const lastC={...candles[candles.length-1],c:px};
-  const allC=[...candles.slice(0,-1),lastC];
-
+  const allC=[...candles.slice(0,-1),{...candles[candles.length-1],c:px}];
   let svg=`<svg id="candle-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">`;
-  // Grid
   for(let i=0;i<4;i++){const y=pad.t+i*((H-pad.t-pad.b)/3);svg+=`<line x1="${pad.l}" y1="${y}" x2="${W-pad.r}" y2="${y}" stroke="#0d1218" stroke-width="1"/>`;const v=yMax-(i*(yMax-yMin)/3);svg+=`<text x="${pad.l-4}" y="${y+4}" fill="#374151" font-size="8" text-anchor="end" font-family="Courier New">$${v.toFixed(0)}</text>`;}
-  // Candles
   allC.forEach((c,i)=>{
-    const isUp=c.c>=c.o;const col=isUp?'#22c55e':'#ef4444';
-    const x=xP(i);
+    const isUp=c.c>=c.o,col=isUp?'#22c55e':'#ef4444',x=xP(i);
     svg+=`<line x1="${x}" y1="${yP(c.h)}" x2="${x}" y2="${yP(c.l)}" stroke="${col}" stroke-width="1"/>`;
     const top=yP(Math.max(c.o,c.c)),bot=yP(Math.min(c.o,c.c)),ht=Math.max(1,bot-top);
     svg+=`<rect x="${xP(i)-cW/2}" y="${top}" width="${cW}" height="${ht}" fill="${col}" opacity="0.85"/>`;
   });
-  // Current price line
   svg+=`<line x1="${pad.l}" y1="${yP(px)}" x2="${W-pad.r}" y2="${yP(px)}" stroke="#e8b84b" stroke-width="0.5" stroke-dasharray="3,3"/>`;
   svg+=`<text x="${W-pad.r+2}" y="${yP(px)+4}" fill="#e8b84b" font-size="8" font-family="Courier New">$${fmtN(px)}</text>`;
   svg+='</svg>';
@@ -658,57 +689,50 @@ function renderNews(co){
 }
 
 function renderInfo(co,px){
-  const mcap=px*co.sh;
-  return `
-<div class="info-grid">
-  <div class="info-cell"><div class="info-label">CEO</div><div class="info-val">${esc(co.ceo)}</div></div>
-  <div class="info-cell"><div class="info-label">FOUNDED</div><div class="info-val">${co.f}</div></div>
-  <div class="info-cell"><div class="info-label">EMPLOYEES</div><div class="info-val">${co.emp}</div></div>
-  <div class="info-cell"><div class="info-label">MARKET CAP</div><div class="info-val">${fmt$(mcap)}</div></div>
-  <div class="info-cell"><div class="info-label">SHARES OUT.</div><div class="info-val">${fmt$(co.sh,0)}</div></div>
-  <div class="info-cell"><div class="info-label">SECTOR</div><div class="info-val">${esc(co.s)}</div></div>
-  <div class="info-cell"><div class="info-label">BETA</div><div class="info-val">${co.bt}</div></div>
-  <div class="info-cell"><div class="info-label">IMPLIED VOL.</div><div class="info-val">${(co.iv*100).toFixed(1)}%</div></div>
-</div>
-<div class="info-desc">${esc(co.desc)}</div>`;
+  return `<div class="info-grid">
+    <div class="info-cell"><div class="info-label">CEO</div><div class="info-val">${esc(co.ceo)}</div></div>
+    <div class="info-cell"><div class="info-label">FOUNDED</div><div class="info-val">${co.f}</div></div>
+    <div class="info-cell"><div class="info-label">EMPLOYEES</div><div class="info-val">${co.emp}</div></div>
+    <div class="info-cell"><div class="info-label">MARKET CAP</div><div class="info-val">${fmt$(px*co.sh)}</div></div>
+    <div class="info-cell"><div class="info-label">SHARES OUT.</div><div class="info-val">${fmt$(co.sh,0)}</div></div>
+    <div class="info-cell"><div class="info-label">SECTOR</div><div class="info-val">${esc(co.s)}</div></div>
+    <div class="info-cell"><div class="info-label">BETA</div><div class="info-val">${co.bt}</div></div>
+    <div class="info-cell"><div class="info-label">IMPLIED VOL.</div><div class="info-val">${(co.iv*100).toFixed(1)}%</div></div>
+  </div><div class="info-desc">${esc(co.desc)}</div>`;
 }
 
-function renderPositions(user){
-  const posEntries=Object.entries(user.pos||{}).filter(([,v])=>v.sh>0);
+function renderPositions(){
+  const posEntries = Object.entries(userPositions).filter(([,v])=>v.shares>0);
   let posValue=0,posCost=0;
-  posEntries.forEach(([sym,v])=>{posValue+=v.sh*(prices[sym]||0);posCost+=v.sh*v.avg;});
+  posEntries.forEach(([sym,v])=>{posValue+=v.shares*(prices[sym]||0);posCost+=v.shares*v.avg_price;});
   const posGL=posValue-posCost;
 
+  const tabBar = `<div class="pos-tabs">
+    <button class="pos-tab${posTab==='POSITIONS'?' active':''}" data-ptab="POSITIONS">POSITIONS</button>
+    <button class="pos-tab${posTab==='HISTORY'?' active':''}" data-ptab="HISTORY">HISTORY</button>
+    <div class="pos-stats">Portfolio <b>$${fmtN(posValue)}</b> &nbsp; P&L <b class="${posGL>=0?'up':'dn'}">${fmt$(posGL)}</b></div>
+  </div>`;
+
   if(posTab==='POSITIONS'){
-    const rows=posEntries.length===0
-      ?`<div class="pos-empty">No open positions.</div>`
-      :`<table class="pos-table"><thead><tr><th>SYMBOL</th><th>SHARES</th><th>AVG COST</th><th>CUR PRICE</th><th>MARKET VAL</th><th>P&L</th><th></th></tr></thead><tbody>${
+    const rows = posEntries.length===0 ? `<div class="pos-empty">No open positions.</div>` :
+      `<table class="pos-table"><thead><tr><th>SYM</th><th>SHARES</th><th>AVG</th><th>PRICE</th><th>VALUE</th><th>P&L</th><th></th></tr></thead><tbody>${
         posEntries.map(([sym,v])=>{
-          const cp=prices[sym]||0;const gl=(cp-v.avg)*v.sh;const cls=gl>=0?'up':'dn';
-          return `<tr><td><span style="color:${ALL[sym]?.col||'var(--gold)'}">${sym}</span></td><td>${v.sh.toLocaleString()}</td><td>$${fmtN(v.avg)}</td><td>$${fmtN(cp)}</td><td>$${fmtN(cp*v.sh)}</td><td class="${cls}">${fmt$(gl)}</td><td><button class="close-btn" data-close="${sym}">CLOSE</button></td></tr>`;
+          const cp=prices[sym]||0,gl=(cp-v.avg_price)*v.shares,cls=gl>=0?'up':'dn';
+          return `<tr><td><span style="color:${ALL[sym]?.col||'var(--gold)'}">${sym}</span></td><td>${v.shares.toLocaleString()}</td><td>$${fmtN(v.avg_price)}</td><td>$${fmtN(cp)}</td><td>$${fmtN(cp*v.shares)}</td><td class="${cls}">${fmt$(gl)}</td><td><button class="close-btn" data-close="${sym}">CLOSE</button></td></tr>`;
         }).join('')
       }</tbody></table>`;
-    return `<div class="pos-tabs">
-      <button class="pos-tab active" data-ptab="POSITIONS">POSITIONS</button>
-      <button class="pos-tab" data-ptab="HISTORY">HISTORY</button>
-      <div class="pos-stats">Portfolio Value <b>$${fmtN(posValue)}</b> &nbsp; Total P&L <b class="${posGL>=0?'up':'dn'}">${fmt$(posGL)}</b></div>
-    </div><div class="pos-scroll">${rows}</div>`;
+    return tabBar+`<div class="pos-scroll">${rows}</div>`;
   } else {
-    const txs=[...(user.txs||[])].reverse().slice(0,50);
-    const rows=txs.length===0
-      ?`<div class="pos-empty">No transaction history.</div>`
-      :txs.map(tx=>`<div class="tx-row"><span class="tx-type tx-${tx.type.toLowerCase()}">${tx.type}</span><span>${tx.sym} · ${tx.sh?.toLocaleString()||'-'} sh @ $${fmtN(tx.px||0)}</span><span class="tx-meta">$${fmtN(tx.total||0)} · ${new Date(tx.ts).toLocaleDateString()}</span></div>`).join('');
-    return `<div class="pos-tabs">
-      <button class="pos-tab" data-ptab="POSITIONS">POSITIONS</button>
-      <button class="pos-tab active" data-ptab="HISTORY">HISTORY</button>
-      <div class="pos-stats">Portfolio Value <b>$${fmtN(posValue)}</b> &nbsp; Total P&L <b class="${posGL>=0?'up':'dn'}">${fmt$(posGL)}</b></div>
-    </div><div class="pos-scroll">${rows}</div>`;
+    const rows = userTransactions.length===0 ? `<div class="pos-empty">No history yet.</div>` :
+      userTransactions.slice(0,50).map(tx=>`<div class="tx-row"><span class="tx-type tx-${tx.type.toLowerCase()}">${tx.type}</span><span>${tx.symbol} · ${tx.shares?.toLocaleString()||'-'} sh @ $${fmtN(tx.price||0)}</span><span class="tx-meta">$${fmtN(tx.total||0)} · ${new Date(tx.created_at).toLocaleDateString()}</span></div>`).join('');
+    return tabBar+`<div class="pos-scroll">${rows}</div>`;
   }
 }
 
-function renderOrder(co,px,user){
+function renderOrder(co,px){
   const shares=parseFloat(orderShares)||0;
   const total=shares*px;
+  const pos = userPositions[selectedSym];
   return `
 <div class="op-hdr">ORDER · ${selectedSym}</div>
 <div class="op-tabs">
@@ -717,323 +741,204 @@ function renderOrder(co,px,user){
 </div>
 <div class="op-body">
   ${orderMsg?`<div class="op-msg ${orderMsg.type}">${esc(orderMsg.text)}</div>`:''}
-  <div class="op-field">
-    <div class="op-label">SHARES</div>
-    <input type="number" id="op-shares" value="${orderShares}" placeholder="0" min="1"/>
-  </div>
-  <div class="op-field">
-    <div class="op-label">PRICE (MARKET)</div>
-    <input value="$${fmtN(px)}" readonly style="color:var(--t3)"/>
-  </div>
+  <div class="op-field"><div class="op-label">SHARES</div><input type="number" id="op-shares" value="${orderShares}" placeholder="0" min="1"/></div>
+  <div class="op-field"><div class="op-label">PRICE (MARKET)</div><input value="$${fmtN(px)}" readonly style="color:var(--t3)"/></div>
   <div class="op-summary">
     <div class="op-sumrow"><span class="op-sumkey">EST. TOTAL</span><span class="op-sumval">${shares>0?`$${fmtN(total)}`:'—'}</span></div>
-    <div class="op-sumrow"><span class="op-sumkey">CASH AVAIL.</span><span class="op-sumval">$${fmtN(user.cash)}</span></div>
-    <div class="op-sumrow"><span class="op-sumkey">POSITION</span><span class="op-sumval">${user.pos[selectedSym]?(user.pos[selectedSym].sh).toLocaleString()+' sh':'—'}</span></div>
+    <div class="op-sumrow"><span class="op-sumkey">CASH AVAIL.</span><span class="op-sumval">$${fmtN(currentProfile?.cash||0)}</span></div>
+    <div class="op-sumrow"><span class="op-sumkey">POSITION</span><span class="op-sumval">${pos?(pos.shares).toLocaleString()+' sh':'—'}</span></div>
   </div>
   <button class="op-submit ${orderDir}" id="op-submit">${orderDir==='buy'?'BUY':'SELL'} ${selectedSym}</button>
 </div>`;
 }
 
-function renderPortfolio(user){
-  const posEntries=Object.entries(user.pos||{}).filter(([,v])=>v.sh>0);
+function renderPortfolio(){
+  const posEntries=Object.entries(userPositions).filter(([,v])=>v.shares>0);
   let posValue=0,posCost=0;
-  posEntries.forEach(([sym,v])=>{posValue+=v.sh*(prices[sym]||0);posCost+=v.sh*v.avg;});
-  const posGL=posValue-posCost;
-  const total=user.cash+posValue;
-
+  posEntries.forEach(([sym,v])=>{posValue+=v.shares*(prices[sym]||0);posCost+=v.shares*v.avg_price;});
+  const posGL=posValue-posCost,total=(currentProfile?.cash||0)+posValue;
   const rows=posEntries.map(([sym,v])=>{
-    const cp=prices[sym]||0,gl=(cp-v.avg)*v.sh,mv=cp*v.sh;
-    const cls=gl>=0?'up':'dn';
-    return `<tr><td><span style="color:${ALL[sym]?.col||'var(--gold)'}">${sym}</span></td><td>${esc(ALL[sym]?.n||sym)}</td><td>${v.sh.toLocaleString()}</td><td>$${fmtN(v.avg)}</td><td>$${fmtN(cp)}</td><td>$${fmtN(mv)}</td><td class="${cls}">${fmt$(gl)}</td><td class="${cls}">${pctS(pct(cp,v.avg))}</td></tr>`;
+    const cp=prices[sym]||0,gl=(cp-v.avg_price)*v.shares,mv=cp*v.shares,cls=gl>=0?'up':'dn';
+    return `<tr><td><span style="color:${ALL[sym]?.col||'var(--gold)'}">${sym}</span></td><td>${esc(ALL[sym]?.n||sym)}</td><td>${v.shares.toLocaleString()}</td><td>$${fmtN(v.avg_price)}</td><td>$${fmtN(cp)}</td><td>$${fmtN(mv)}</td><td class="${cls}">${fmt$(gl)}</td><td class="${cls}">${pctS(pct(cp,v.avg_price))}</td></tr>`;
   }).join('');
-
   return `<div id="portfolio-view">
-  <div style="font-size:9px;letter-spacing:.15em;color:var(--t4);margin-bottom:14px">PORTFOLIO — ${esc(user.name)}</div>
+  <div style="font-size:9px;letter-spacing:.15em;color:var(--t4);margin-bottom:14px">PORTFOLIO — ${esc(currentProfile?.display_name||'')}</div>
   <div class="pv-summary">
     <div class="pv-card"><div class="pv-label">TOTAL VALUE</div><div class="pv-val gold">$${fmtN(total)}</div></div>
-    <div class="pv-card"><div class="pv-label">CASH</div><div class="pv-val" style="color:var(--t1)">$${fmtN(user.cash)}</div></div>
+    <div class="pv-card"><div class="pv-label">CASH</div><div class="pv-val" style="color:var(--t1)">$${fmtN(currentProfile?.cash||0)}</div></div>
     <div class="pv-card"><div class="pv-label">INVESTED</div><div class="pv-val" style="color:var(--blue)">$${fmtN(posValue)}</div></div>
     <div class="pv-card"><div class="pv-label">TOTAL P&L</div><div class="pv-val ${posGL>=0?'up':'dn'}">${fmt$(posGL)}</div></div>
   </div>
-  ${posEntries.length===0?`<div class="pos-empty" style="color:var(--t4);padding:40px;text-align:center">No open positions. Use the order panel to buy stocks.</div>`:`
+  ${posEntries.length===0?`<div class="pos-empty" style="padding:40px;text-align:center;color:var(--t4)">No open positions. Buy stocks using the order panel.</div>`:`
   <table class="pos-table" style="background:var(--bg1);border:1px solid var(--border)">
-    <thead><tr><th style="text-align:left">SYM</th><th style="text-align:left">COMPANY</th><th>SHARES</th><th>AVG COST</th><th>PRICE</th><th>MKT VAL</th><th>P&L $</th><th>P&L %</th></tr></thead>
+    <thead><tr><th style="text-align:left">SYM</th><th style="text-align:left">COMPANY</th><th>SHARES</th><th>AVG</th><th>PRICE</th><th>MKT VAL</th><th>P&L $</th><th>P&L %</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>`}
 </div>`;
 }
 
 function renderAdmin(){
-  const users=Object.values(db.users);
+  if(allProfiles.length===0){ loadAllProfiles().then(()=>render()); return `<div id="admin-panel"><div class="loading-txt" style="padding:40px;color:var(--t4)">LOADING USERS...</div></div>`; }
   return `<div id="admin-panel">
-  <div class="admin-title">⚙ ADMIN PANEL — USER MANAGEMENT</div>
+  <div class="admin-title">⚙ ADMIN PANEL — USER MANAGEMENT (${allProfiles.length} users)</div>
   <div class="admin-section">
-    <div class="admin-section-title">REGISTERED USERS (${users.length})</div>
+    <div class="admin-section-title">REGISTERED USERS</div>
     <div class="admin-users">
-      ${users.map(u=>{
-        const posV=Object.entries(u.pos||{}).reduce((a,[s,v])=>a+v.sh*(prices[s]||0),0);
-        const inp=adminInputs[u.u]||'';
+      ${allProfiles.map(u=>{
+        const inp=adminInputs[u.id]||'';
         return `<div class="au-row">
-          <div class="au-name">${esc(u.name)}${u.isAdmin?`<span class="au-badge au-admin-badge">ADMIN</span>`:''}</div>
-          <div style="font-size:9px;color:var(--t3);min-width:60px">@${u.u}</div>
+          <div class="au-name">${esc(u.display_name)}${u.is_admin?`<span class="au-badge au-admin-badge">ADMIN</span>`:''}</div>
+          <div style="font-size:9px;color:var(--t3);min-width:80px">@${u.username}</div>
           <div class="au-bal">$${fmtN(u.cash)}</div>
-          <div style="font-size:9px;color:var(--t4);min-width:100px">Portfolio: $${fmtN(posV)}</div>
           <div class="au-actions">
-            <input class="au-input" type="number" placeholder="amount" data-au="${u.u}" value="${esc(inp)}"/>
-            <button class="au-btn au-set" data-action="set" data-target="${u.u}">SET</button>
-            <button class="au-btn au-add" data-action="add" data-target="${u.u}">ADD</button>
-            <button class="au-btn au-sub" data-action="sub" data-target="${u.u}">SUB</button>
-            <button class="au-btn au-reset" data-action="reset" data-target="${u.u}">RESET</button>
-            ${u.u!==currentUser?(u.isAdmin
-              ?`<button class="au-btn au-demote" data-action="demote" data-target="${u.u}">DEMOTE</button>`
-              :`<button class="au-btn au-promote" data-action="promote" data-target="${u.u}">PROMOTE</button>`
-            ):''}
-            ${u.u!==currentUser?`<button class="au-btn au-del" data-action="delete" data-target="${u.u}">DEL</button>`:''}
+            <input class="au-input" type="number" placeholder="amount" data-uid="${u.id}" value="${esc(inp)}"/>
+            <button class="au-btn au-set" data-action="set" data-uid="${u.id}">SET</button>
+            <button class="au-btn au-add" data-action="add" data-uid="${u.id}">ADD</button>
+            <button class="au-btn au-sub" data-action="sub" data-uid="${u.id}">SUB</button>
+            <button class="au-btn au-reset" data-action="reset" data-uid="${u.id}">RESET</button>
+            ${u.id!==currentUser.id?(u.is_admin
+              ?`<button class="au-btn au-demote" data-action="demote" data-uid="${u.id}">DEMOTE</button>`
+              :`<button class="au-btn au-promote" data-action="promote" data-uid="${u.id}">PROMOTE</button>`
+            ):'<span style="font-size:9px;color:var(--t4)">(you)</span>'}
           </div>
         </div>`;
       }).join('')}
     </div>
   </div>
-  <div class="admin-section">
-    <div class="admin-section-title">REGISTER NEW USER</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <input id="new-u" placeholder="username" style="width:120px"/>
-      <input id="new-n" placeholder="display name" style="width:160px"/>
-      <input id="new-p" placeholder="password" type="password" style="width:120px"/>
-      <input id="new-c" placeholder="starting cash" type="number" style="width:120px"/>
-      <button class="au-btn au-set" id="new-create">CREATE</button>
-    </div>
-    <div id="new-msg" style="margin-top:8px;font-size:10px;color:var(--green)"></div>
-  </div>
 </div>`;
 }
 
-// ═══════════════════════════════════════════════
-//  BIND EVENTS
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+//  BIND APP EVENTS
+// ═══════════════════════════════════════════════════════════
 function bindApp(){
-  // Nav
-  document.getElementById('nav-logout').onclick=()=>{currentUser=null;render();};
-  const portBtn=document.getElementById('nav-port-btn');
-  if(portBtn)portBtn.onclick=()=>{chartTab=chartTab==='PORTFOLIO'?'CHART':'PORTFOLIO';render();};
-  const adminBtn=document.getElementById('nav-admin-btn');
-  if(adminBtn)adminBtn.onclick=()=>{chartTab=chartTab==='ADMIN'?'CHART':'ADMIN';render();};
-
-  // Sidebar search
-  const sbq=document.getElementById('sb-q');
-  if(sbq)sbq.oninput=e=>{sidebarSearch=e.target.value;render();};
-
-  // Sidebar filter
-  document.querySelectorAll('.sf-btn').forEach(b=>b.onclick=()=>{sidebarFilter=b.dataset.f;render();});
-
-  // Watchlist click
-  document.querySelectorAll('.wl-row').forEach(r=>r.onclick=()=>{
-    selectedSym=r.dataset.sym;
-    if(chartTab==='ADMIN'||chartTab==='PORTFOLIO')chartTab='CHART';
-    orderShares='';orderMsg=null;render();
-  });
-
-  // Chart tabs
-  document.querySelectorAll('.ct-btn').forEach(b=>b.onclick=()=>{chartTab=b.dataset.ct;render();});
-
-  // Chart content swap (news/info)
-  if(chartTab==='NEWS'&&document.getElementById('chart-area')){
-    document.getElementById('chart-area').innerHTML=renderNews(ALL[selectedSym]);
-  } else if(chartTab==='INFO'&&document.getElementById('chart-area')){
-    document.getElementById('chart-area').innerHTML=renderInfo(ALL[selectedSym],prices[selectedSym]);
-  }
-
-  // Order dir tabs
-  document.querySelectorAll('[data-dir]').forEach(b=>b.onclick=()=>{orderDir=b.dataset.dir;orderMsg=null;render();});
-
-  // Shares input
-  const opSh=document.getElementById('op-shares');
-  if(opSh){opSh.oninput=e=>{orderShares=e.target.value;render();};}
-
-  // Submit order
-  const opSub=document.getElementById('op-submit');
-  if(opSub)opSub.onclick=()=>{
-    const user=db.users[currentUser];
-    const shares=Math.floor(parseFloat(orderShares)||0);
-    const px=prices[selectedSym];
-    if(shares<=0){orderMsg={type:'err',text:'Enter a valid number of shares.'};render();return;}
-    if(orderDir==='buy'){
-      const total=shares*px;
-      if(total>user.cash){orderMsg={type:'err',text:`Insufficient funds. Need $${fmtN(total)}, have $${fmtN(user.cash)}.`};render();return;}
-      user.cash=+(user.cash-total).toFixed(2);
-      if(!user.pos[selectedSym])user.pos[selectedSym]={sh:0,avg:0};
-      const existing=user.pos[selectedSym];
-      existing.avg=(existing.sh*existing.avg+shares*px)/(existing.sh+shares);
-      existing.sh+=shares;
-      user.txs.push({id:uid(),type:'BUY',sym:selectedSym,sh:shares,px,total,ts:Date.now()});
-      orderMsg={type:'ok',text:`Bought ${shares.toLocaleString()} ${selectedSym} @ $${fmtN(px)}.`};
-    } else {
-      if(!user.pos[selectedSym]||user.pos[selectedSym].sh<shares){orderMsg={type:'err',text:`You only have ${(user.pos[selectedSym]?.sh||0).toLocaleString()} shares.`};render();return;}
-      const total=shares*px;
-      user.cash=+(user.cash+total).toFixed(2);
-      user.pos[selectedSym].sh-=shares;
-      if(user.pos[selectedSym].sh===0)delete user.pos[selectedSym];
-      user.txs.push({id:uid(),type:'SELL',sym:selectedSym,sh:shares,px,total,ts:Date.now()});
-      orderMsg={type:'ok',text:`Sold ${shares.toLocaleString()} ${selectedSym} @ $${fmtN(px)}.`};
-    }
-    saveDB(db);orderShares='';render();
+  document.getElementById('nav-logout').onclick = () => doLogout();
+  const portBtn = document.getElementById('nav-port-btn');
+  if(portBtn) portBtn.onclick = () => { chartTab=chartTab==='PORTFOLIO'?'CHART':'PORTFOLIO'; render(); };
+  const adminBtn = document.getElementById('nav-admin-btn');
+  if(adminBtn) adminBtn.onclick = () => {
+    if(chartTab!=='ADMIN'){ loadAllProfiles().then(()=>render()); }
+    chartTab = chartTab==='ADMIN'?'CHART':'ADMIN';
+    render();
   };
 
-  // Close position
-  document.querySelectorAll('.close-btn').forEach(b=>b.onclick=()=>{
-    const sym=b.dataset.close;
-    const user=db.users[currentUser];
-    const pos=user.pos[sym];
-    if(!pos||pos.sh<=0)return;
-    const px=prices[sym];const total=pos.sh*px;
-    user.cash=+(user.cash+total).toFixed(2);
-    user.txs.push({id:uid(),type:'SELL',sym,sh:pos.sh,px,total,ts:Date.now()});
-    delete user.pos[sym];
-    saveDB(db);render();
+  const sbq = document.getElementById('sb-q');
+  if(sbq) sbq.oninput = e => { sidebarSearch=e.target.value; render(); };
+
+  document.querySelectorAll('.sf-btn').forEach(b=>b.onclick=()=>{sidebarFilter=b.dataset.f;render();});
+  document.querySelectorAll('.wl-row').forEach(r=>r.onclick=()=>{
+    selectedSym=r.dataset.sym;
+    if(chartTab==='ADMIN'||chartTab==='PORTFOLIO') chartTab='CHART';
+    orderShares='';orderMsg=null;render();
+  });
+  document.querySelectorAll('.ct-btn').forEach(b=>b.onclick=()=>{
+    chartTab=b.dataset.ct;render();
+    if(chartTab==='NEWS') document.getElementById('chart-area').innerHTML=renderNews(ALL[selectedSym]);
+    if(chartTab==='INFO') document.getElementById('chart-area').innerHTML=renderInfo(ALL[selectedSym],prices[selectedSym]);
+  });
+  document.querySelectorAll('[data-dir]').forEach(b=>b.onclick=()=>{orderDir=b.dataset.dir;orderMsg=null;render();});
+
+  const opSh = document.getElementById('op-shares');
+  if(opSh) opSh.oninput = e => { orderShares=e.target.value; render(); };
+
+  const opSub = document.getElementById('op-submit');
+  if(opSub) opSub.onclick = async () => {
+    const shares = Math.floor(parseFloat(orderShares)||0);
+    const px = prices[selectedSym];
+    if(shares<=0){orderMsg={type:'err',text:'Enter a valid number of shares.'};render();return;}
+    opSub.disabled=true;opSub.textContent='...';
+    if(orderDir==='buy'){
+      const total=shares*px;
+      if(total>currentProfile.cash){orderMsg={type:'err',text:`Need $${fmtN(total)}, have $${fmtN(currentProfile.cash)}.`};render();return;}
+      const newCash=+(currentProfile.cash-total).toFixed(2);
+      const existing=userPositions[selectedSym];
+      const newShares=(existing?.shares||0)+shares;
+      const newAvg=existing?((existing.shares*existing.avg_price+shares*px)/newShares):px;
+      await Promise.all([saveCash(newCash),savePosition(selectedSym,newShares,+newAvg.toFixed(4)),saveTransaction('BUY',selectedSym,shares,px,total)]);
+      orderMsg={type:'ok',text:`Bought ${shares.toLocaleString()} ${selectedSym} @ $${fmtN(px)}.`};
+    } else {
+      const existing=userPositions[selectedSym];
+      if(!existing||existing.shares<shares){orderMsg={type:'err',text:`You only have ${existing?.shares||0} shares.`};render();return;}
+      const total=+(shares*px).toFixed(2);
+      const newCash=+(currentProfile.cash+total).toFixed(2);
+      const newShares=existing.shares-shares;
+      await Promise.all([saveCash(newCash),savePosition(selectedSym,newShares,existing.avg_price),saveTransaction('SELL',selectedSym,shares,px,total)]);
+      orderMsg={type:'ok',text:`Sold ${shares.toLocaleString()} ${selectedSym} @ $${fmtN(px)}.`};
+    }
+    orderShares='';render();
+  };
+
+  document.querySelectorAll('.close-btn').forEach(b=>b.onclick=async()=>{
+    const sym=b.dataset.close;const pos=userPositions[sym];if(!pos||pos.shares<=0)return;
+    const px=prices[sym],total=+(pos.shares*px).toFixed(2),newCash=+(currentProfile.cash+total).toFixed(2);
+    await Promise.all([saveCash(newCash),savePosition(sym,0,pos.avg_price),saveTransaction('SELL',sym,pos.shares,px,total)]);
+    render();
   });
 
-  // Position tabs
   document.querySelectorAll('[data-ptab]').forEach(b=>b.onclick=()=>{posTab=b.dataset.ptab;render();});
 
   // Admin actions
   document.querySelectorAll('[data-action]').forEach(btn=>{
-    btn.onclick=()=>{
-      const action=btn.dataset.action;
-      const target=btn.dataset.target;
-      const u=db.users[target];
-      if(!u)return;
-      const inp=adminInputs[target];
-      const amt=parseFloat(inp)||0;
-      if(action==='set'&&amt>=0){u.cash=+amt.toFixed(2);}
-      else if(action==='add'&&amt>0){u.cash=+(u.cash+amt).toFixed(2);}
-      else if(action==='sub'&&amt>0){u.cash=Math.max(0,+(u.cash-amt).toFixed(2));}
-      else if(action==='reset'){u.cash=100000;}
-      else if(action==='promote'){u.isAdmin=true;}
-      else if(action==='demote'){u.isAdmin=false;}
-      else if(action==='delete'){if(confirm(`Delete user ${target}?`)){delete db.users[target];}}
-      saveDB(db);render();
+    btn.onclick=async()=>{
+      const action=btn.dataset.action,uid=btn.dataset.uid;
+      const profile=allProfiles.find(p=>p.id===uid);if(!profile)return;
+      const inp=adminInputs[uid],amt=parseFloat(inp)||0;
+      if(action==='set'&&amt>=0) await adminUpdateCash(uid,+amt.toFixed(2));
+      else if(action==='add'&&amt>0) await adminUpdateCash(uid,+(profile.cash+amt).toFixed(2));
+      else if(action==='sub'&&amt>0) await adminUpdateCash(uid,+Math.max(0,profile.cash-amt).toFixed(2));
+      else if(action==='reset') await adminUpdateCash(uid,100000);
+      else if(action==='promote') await adminSetAdmin(uid,true);
+      else if(action==='demote') await adminSetAdmin(uid,false);
+      render();
     };
   });
 
-  // Admin input tracking
-  document.querySelectorAll('[data-au]').forEach(inp=>{
-    inp.oninput=e=>{adminInputs[e.target.dataset.au]=e.target.value;};
+  document.querySelectorAll('[data-uid]').forEach(inp=>{
+    inp.oninput=e=>{adminInputs[e.target.dataset.uid]=e.target.value;};
   });
-
-  // Admin create user
-  const newCreate=document.getElementById('new-create');
-  if(newCreate)newCreate.onclick=()=>{
-    const u=document.getElementById('new-u').value.trim().toLowerCase();
-    const n=document.getElementById('new-n').value.trim();
-    const p=document.getElementById('new-p').value;
-    const c=parseFloat(document.getElementById('new-c').value)||100000;
-    if(!u||!n||!p){document.getElementById('new-msg').textContent='All fields required.';document.getElementById('new-msg').style.color='var(--red)';return;}
-    if(db.users[u]){document.getElementById('new-msg').textContent='Username taken.';document.getElementById('new-msg').style.color='var(--red)';return;}
-    db.users[u]={u,p,name:n,isAdmin:false,cash:c,pos:{},txs:[],joined:Date.now()};
-    saveDB(db);
-    document.getElementById('new-msg').textContent=`Created user @${u} with $${fmtN(c)}.`;
-    document.getElementById('new-msg').style.color='var(--green)';
-    render();
-  };
 }
 
-// ═══════════════════════════════════════════════
-//  UNIVERSAL ADMIN — NMX_ROOT
-//  Username: NMX_ROOT  |  Password: Nx#8mQ2$vL!
-// ═══════════════════════════════════════════════
-(function ensureRoot(){
-  if(!db.users['nmx_root']){
-    db.users['nmx_root']={u:'nmx_root',p:'Nx#8mQ2$vL!',name:'NMX Root Administrator',isAdmin:true,cash:9999999999,pos:{},txs:[],joined:Date.now()};
-    saveDB(db);
-  }
-})();
-
-// ═══════════════════════════════════════════════
-//  TICK LOOP — smart partial DOM updates only.
-//  NEVER re-renders the login screen.
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+//  TICK LOOP — never touches login DOM
+// ═══════════════════════════════════════════════════════════
 tick();
-
 function tickUpdate(){
   tick();
-  if(!currentUser) return; // never touch login DOM
-
+  if(!currentUser||!currentProfile) return;
   if(chartTab==='ADMIN'||chartTab==='PORTFOLIO') return;
 
-  // Watchlist prices
   document.querySelectorAll('.wl-row[data-sym]').forEach(row=>{
-    const s=row.dataset.sym;
-    const p=prices[s],o=opens[s],c=pct(p,o);
-    const cls=c>=0?'up':'dn';
-    const pe=row.querySelector('.wl-price');
-    const ce=row.querySelector('.wl-pct');
-    if(pe) pe.textContent='$'+fmtN(p);
+    const s=row.dataset.sym,p=prices[s],o=opens[s],c=pct(p,o),cls=c>=0?'up':'dn';
+    const pe=row.querySelector('.wl-price'),ce=row.querySelector('.wl-pct');
+    if(pe)pe.textContent='$'+fmtN(p);
     if(ce){ce.textContent=pctS(c);ce.className='wl-pct '+cls;}
   });
-
-  // Sym header
   const sp=document.querySelector('.sym-price');
-  if(sp){
-    const p=prices[selectedSym],o=opens[selectedSym],c=pct(p,o);
-    sp.textContent='$'+fmtN(p);
-    const sc=document.querySelector('.sym-chg');
-    if(sc){sc.textContent=pctS(c);sc.className='sym-chg '+(c>=0?'up':'dn');}
-  }
-
-  // Nav cash
-  const nc=document.querySelector('.nav-cash b');
-  if(nc&&db.users[currentUser]) nc.textContent='$'+fmtN(db.users[currentUser].cash);
-
-  // NMX index
-  const topS=['STI','BCII','BCOR','NDX','VTGS','MREN','CSTL','APBX','RXON','HAIM','GNSS','HDRN','SPRT','TNSK','SHVN','RVLT','MNRL','PTHR','WVLK'];
+  if(sp){const p=prices[selectedSym],o=opens[selectedSym],c=pct(p,o);sp.textContent='$'+fmtN(p);const sc=document.querySelector('.sym-chg');if(sc){sc.textContent=pctS(c);sc.className='sym-chg '+(c>=0?'up':'dn');}}
+  const nc=document.querySelector('.nav-cash b');if(nc)nc.textContent='$'+fmtN(currentProfile?.cash||0);
+  const topS=['STI','BCII','BCOR','NDX','VTGS','MREN','CSTL','APBX','RXON','HAIM'];
   const nmxPx=topS.reduce((a,s)=>a+(prices[s]||0),0)/topS.length;
-  const nmxO=topS.reduce((a,s)=>a+(opens[s]||0),0)/topS.length;
-  const nmxC=pct(nmxPx,nmxO);
+  const nmxC=pct(nmxPx,topS.reduce((a,s)=>a+(opens[s]||0),0)/topS.length);
   const idxEl=document.querySelector('.nav-idx');
-  if(idxEl){
-    const sp2=idxEl.querySelectorAll('span');
-    if(sp2[1]) sp2[1].textContent='$'+fmtN(nmxPx);
-    if(sp2[2]){sp2[2].textContent=pctS(nmxC);sp2[2].style.color=nmxC>=0?'var(--green)':'var(--red)';}
-  }
-
-  // Tape
+  if(idxEl){const sp2=idxEl.querySelectorAll('span');if(sp2[1])sp2[1].textContent='$'+fmtN(nmxPx);if(sp2[2]){sp2[2].textContent=pctS(nmxC);sp2[2].style.color=nmxC>=0?'var(--green)':'var(--red)';}}
   const ti=document.querySelector('.tape-inner');
-  if(ti){
-    const ts=SYMS.slice(0,40).map(s=>{
-      const p=prices[s],o=opens[s],c=pct(p,o),cls=c>=0?'up':'dn';
-      return `<span class="ti ${cls}"><b>${s}</b> ${fmtN(p)} <span class="${cls}">${pctS(c)}</span></span>`;
-    }).join('');
-    ti.innerHTML=ts+ts;
-  }
-
-  // Candle chart redraw
-  if(chartTab==='CHART'){
-    const ca=document.getElementById('chart-area');
-    if(ca&&ca.querySelector('#candle-chart')){
-      const co=ALL[selectedSym],px=prices[selectedSym],op=opens[selectedSym],chg=pct(px,op);
-      ca.innerHTML=renderChart(co,px,chg);
-    }
-  }
-
-  // Positions P&L
-  const user=db.users[currentUser];
-  document.querySelectorAll('.pos-table tbody tr').forEach(row=>{
-    const se=row.querySelector('td:first-child span');
-    if(!se) return;
-    const sym=se.textContent.trim();
-    const pos=user.pos[sym];
-    if(!pos||!prices[sym]) return;
-    const cp=prices[sym],gl=(cp-pos.avg)*pos.sh;
-    const cells=row.querySelectorAll('td');
-    if(cells[3]) cells[3].textContent='$'+fmtN(cp);
-    if(cells[4]) cells[4].textContent='$'+fmtN(cp*pos.sh);
-    if(cells[5]){cells[5].textContent=fmt$(gl);cells[5].className=gl>=0?'up':'dn';}
-  });
+  if(ti){const ts=SYMS.slice(0,40).map(s=>{const p=prices[s],o=opens[s],c=pct(p,o),cls=c>=0?'up':'dn';return `<span class="ti ${cls}"><b>${s}</b> ${fmtN(p)} <span class="${cls}">${pctS(c)}</span></span>`;}).join('');ti.innerHTML=ts+ts;}
+  if(chartTab==='CHART'){const ca=document.getElementById('chart-area');if(ca&&ca.querySelector('#candle-chart')){ca.innerHTML=renderChart(ALL[selectedSym],prices[selectedSym],pct(prices[selectedSym],opens[selectedSym]));}}
 }
-
 setInterval(tickUpdate,1500);
 
-render();
+// ═══════════════════════════════════════════════════════════
+//  BOOT — check for existing session
+// ═══════════════════════════════════════════════════════════
+(async()=>{
+  const { data: { session } } = await sb.auth.getSession();
+  if(session){
+    currentUser = session.user;
+    await loadUserData(currentUser.id);
+  }
+  appLoading = false;
+  render();
+})();
 </script>
 </body>
 </html>
