@@ -387,15 +387,27 @@ let appLoading = true;
 //  SUPABASE DATA LAYER
 // ═══════════════════════════════════════════════════════════
 async function loadUserData(userId) {
-  const [profRes, posRes, txRes] = await Promise.all([
-    sb.from('profiles').select('*').eq('id', userId).single(),
-    sb.from('positions').select('*').eq('user_id', userId),
-    sb.from('transactions').select('*').eq('user_id', userId).order('created_at', {ascending: false}).limit(100)
-  ]);
-  currentProfile = profRes.data;
-  userPositions = {};
-  (posRes.data || []).forEach(p => { if(p.shares > 0) userPositions[p.symbol] = {shares: p.shares, avg_price: p.avg_price, id: p.id}; });
-  userTransactions = txRes.data || [];
+  try {
+    const [profRes, posRes, txRes] = await Promise.all([
+      sb.from('profiles').select('*').eq('id', userId).single(),
+      sb.from('positions').select('*').eq('user_id', userId),
+      sb.from('transactions').select('*').eq('user_id', userId).order('created_at', {ascending: false}).limit(100)
+    ]);
+    if(profRes.error) throw new Error('profiles: '+profRes.error.message);
+    currentProfile = profRes.data;
+    userPositions = {};
+    (posRes.data || []).forEach(p => { if(p.shares > 0) userPositions[p.symbol] = {shares: p.shares, avg_price: p.avg_price, id: p.id}; });
+    userTransactions = txRes.data || [];
+  } catch(e) {
+    console.error('loadUserData error:', e);
+    // If tables don't exist yet, show a helpful message
+    currentProfile = { id: userId, display_name: 'User', username: 'user', is_admin: false, cash: 100000 };
+    authMsg = { type: 'err', text: 'Database tables not set up yet. Please run the SQL setup in your Supabase dashboard.' };
+    currentUser = null;
+    appLoading = false;
+    render();
+    throw e;
+  }
 }
 
 async function loadAllProfiles() {
@@ -928,14 +940,19 @@ function tickUpdate(){
 setInterval(tickUpdate,1500);
 
 // ═══════════════════════════════════════════════════════════
-//  BOOT — check for existing session
+//  BOOT — 4s timeout, never hangs
 // ═══════════════════════════════════════════════════════════
 (async()=>{
-  const { data: { session } } = await sb.auth.getSession();
-  if(session){
-    currentUser = session.user;
-    await loadUserData(currentUser.id);
-  }
+  try {
+    const { data, error } = await Promise.race([
+      sb.auth.getSession(),
+      new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),4000))
+    ]);
+    if(!error && data?.session){
+      currentUser = data.session.user;
+      try { await loadUserData(currentUser.id); } catch(e){ console.warn('loadUserData failed:',e); }
+    }
+  } catch(e){ console.warn('Boot error:',e.message); }
   appLoading = false;
   render();
 })();
