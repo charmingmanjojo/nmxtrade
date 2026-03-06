@@ -272,6 +272,90 @@ const COMPANIES = {
     ceo:"N'Jobu Achebe",       f:"1956",emp:"27,000",
     desc:"A diversified mining conglomerate with significant holdings in central Africa and rare mineral deposits.",
     news:[{d:"Mar 3",h:"Panther Resources posts record quarterly extraction output",s:1},{d:"Feb 19",h:"Political instability in Wakari Province disrupts PTHR operations",s:-1}]},
+
+  // ── FINANCIAL SECTOR (fake Goldman, JPMorgan, BlackRock, etc.) ──
+  GOLM: {n:"Goldmann & Associates",     s:"Investment Banking",       b:412.30,v:.008,t:.00018,iv:.20,bt:.82,sh:3.3e8,col:"#e8b84b",
+    ceo:"Elias Goldmann III",  f:"1869",emp:"48,000",
+    desc:"The most influential investment bank on the NMX. Goldmann & Associates underwrites more IPOs than any other firm and manages sovereign wealth funds across 40 nations. Synonymous with Wall Street power.",
+    news:[{d:"Mar 4",h:"GOLM Q1 trading revenue up 22%; bond desk posts best quarter in a decade",s:1},{d:"Mar 1",h:"Goldmann advises on $14B cross-border merger — largest NMX deal of the year",s:1},{d:"Feb 22",h:"Senate probe into GOLM algorithmic trading practices widens",s:-1}]},
+  MORX: {n:"Morex Capital Group",       s:"Investment Banking",       b:198.44,v:.007,t:.00014,iv:.18,bt:.78,sh:9.1e8,col:"#f59e0b",
+    ceo:"Diana Morex",         f:"1871",emp:"271,000",
+    desc:"A global financial services giant spanning retail banking, investment management, and capital markets. Morex Capital's consumer banking arm serves 60 million customers across North America.",
+    news:[{d:"Mar 3",h:"MORX consumer loan defaults tick up 0.3%; analysts unmoved",s:0},{d:"Feb 28",h:"Morex Capital raises dividend; $3B share buyback announced",s:1},{d:"Feb 20",h:"MORX fined $820M over mortgage securities mis-selling; stock shrugs",s:-1}]},
+  BRKX: {n:"Blackrock Asset Management",s:"Asset Management",         b:890.10,v:.006,t:.00022,iv:.14,bt:.65,sh:1.6e8,col:"#94a3b8",
+    ceo:"Laurence Fink-Hayward",f:"1988",emp:"20,000",
+    desc:"The largest asset manager on the NMX, overseeing $11 trillion in assets. BRKX's Aladdin risk platform powers the portfolios of pension funds, central banks, and sovereign wealth managers worldwide.",
+    news:[{d:"Mar 4",h:"BRKX Aladdin platform adopted by three new central banks",s:1},{d:"Mar 2",h:"Blackrock AM surpasses $11T AUM milestone",s:1},{d:"Feb 25",h:"ESG fund outflows weigh on BRKX fee income in Q4",s:-1}]},
+  CITN: {n:"Citadel National Bank",     s:"Retail Banking",           b:66.20, v:.007,t:.00010,iv:.16,bt:.72,sh:4.4e9,col:"#38bdf8",
+    ceo:"Marcus Pelham",       f:"1812",emp:"220,000",
+    desc:"One of the oldest continuously operating banks in the country. Citadel National provides retail banking, mortgages, and credit cards to 80 million customers. Considered too big to fail.",
+    news:[{d:"Mar 3",h:"CITN mortgage originations fall 11% on high rate environment",s:-1},{d:"Feb 27",h:"Citadel National passes Fed stress test with strongest marks in peer group",s:1}]},
+  VNGD: {n:"Vanguard Wealth Partners",  s:"Asset Management",         b:342.80,v:.006,t:.00012,iv:.13,bt:.60,sh:2.1e8,col:"#6ee7b7",
+    ceo:"Helena Bogle",        f:"1975",emp:"17,600",
+    desc:"A low-cost index fund pioneer managing $9 trillion in passive assets. Vanguard's mutual ownership structure means profits flow back to fund investors — a perpetual competitive advantage.",
+    news:[{d:"Mar 2",h:"VNGD total AUM reaches $9T; low-cost model attracts record inflows",s:1},{d:"Feb 19",h:"Vanguard Wealth Partners expands to Southeast Asian markets",s:1}]},
+  AXCR: {n:"Axceron Credit Corp",       s:"Consumer Finance",         b:88.55, v:.011,t:.00008,iv:.22,bt:.90,sh:7.7e8,col:"#fb923c",
+    ceo:"Priscilla Kane",      f:"1958",emp:"34,000",
+    desc:"A consumer credit and payments company issuing 200 million cards globally. Axceron's data analytics division provides real-time spending insights to over 100 financial institutions.",
+    news:[{d:"Mar 4",h:"AXCR payment volume hits record $1.8T annualized run rate",s:1},{d:"Feb 26",h:"Axceron Credit expands buy-now-pay-later product to 18 new markets",s:1},{d:"Feb 18",h:"AXCR delinquency rate edges higher; credit normalization feared",s:-1}]},
+  PRSM: {n:"Prism Exchange",            s:"Stock Exchange / FinInfra", b:231.70,v:.007,t:.00020,iv:.16,bt:.70,sh:1.8e8,col:"#818cf8",
+    ceo:"Theodora Wills",      f:"1792",emp:"5,200",
+    desc:"The second-largest stock exchange operator in the country, running equities, derivatives, and commodity markets. Prism Exchange's matching engine processes 4 billion trades per day.",
+    news:[{d:"Mar 3",h:"PRSM trading volumes up 31% on market volatility",s:1},{d:"Feb 24",h:"Prism Exchange wins regulatory approval for crypto futures product",s:1}]},
+  HRBR: {n:"Harbor Insurance Group",    s:"Insurance",                b:155.90,v:.007,t:.00010,iv:.17,bt:.68,sh:3.8e8,col:"#22d3ee",
+    ceo:"Samuel Arch",         f:"1901",emp:"52,000",
+    desc:"A property, casualty, and life insurance conglomerate. Harbor Insurance is the leading commercial property insurer in the U.S., with significant reinsurance operations in London and Zurich.",
+    news:[{d:"Mar 2",h:"HRBR hurricane season reserving deemed conservative by analysts; shares rise",s:1},{d:"Feb 23",h:"Harbor Insurance acquires European reinsurer for $2.1B",s:1},{d:"Feb 15",h:"HRBR raises premiums 14% citing climate-related loss trends",s:0}]},
+  KRNS: {n:"Kronos Private Equity",     s:"Private Equity",           b:178.20,v:.009,t:.00015,iv:.21,bt:.85,sh:2.9e8,col:"#a78bfa",
+    ceo:"Victor Kronos",       f:"1984",emp:"3,100",
+    desc:"A private equity firm managing $340B across buyout, growth, and infrastructure funds. Kronos is known for aggressive operational restructuring of acquired companies.",
+    news:[{d:"Mar 4",h:"KRNS infrastructure fund closes at $28B — largest in firm history",s:1},{d:"Feb 28",h:"Kronos Private Equity IPOs portfolio company at $8B valuation",s:1},{d:"Feb 20",h:"Labor groups protest KRNS layoffs at acquired manufacturer",s:-1}]},
+
+  // ── FASHION & LUXURY (fake Gucci, LVMH, Ralph Lauren, Hermès, etc.) ──
+  AURM: {n:"Aurum Maison",             s:"Luxury Fashion",           b:778.40,v:.009,t:.00025,iv:.22,bt:.75,sh:1.1e8,col:"#e8b84b",
+    ceo:"Céleste Aurum",       f:"1921",emp:"42,000",
+    desc:"The most storied luxury house on the NMX. Aurum Maison's double-A monogram is among the most recognizable symbols of wealth in the world, spanning handbags, leather goods, ready-to-wear, and fine jewelry. Headquartered in Paris.",
+    news:[{d:"Mar 4",h:"Aurum Maison Q1 organic revenue up 18%; Asia rebound drives growth",s:1},{d:"Mar 1",h:"AURM spring collection sells out in 48 hours across all flagships",s:1},{d:"Feb 22",h:"Aurum raises prices 9% globally; brand exclusivity strategy intact",s:0}]},
+  VLTX: {n:"Voltaire Group",            s:"Luxury Conglomerate",      b:192.60,v:.008,t:.00020,iv:.19,bt:.72,sh:5.0e8,col:"#f59e0b",
+    ceo:"Henri Voltaire-Morel",f:"1987",emp:"196,000",
+    desc:"A luxury conglomerate owning 75 prestigious brands across fashion, spirits, jewelry, cosmetics, and hospitality. VLTX is the largest luxury company by revenue on the NMX. The Voltaire-Morel family controls 48% of voting shares.",
+    news:[{d:"Mar 3",h:"Voltaire Group acquires storied Italian jewelry house for €4.2B",s:1},{d:"Feb 27",h:"VLTX wine and spirits division posts 12% volume growth",s:1},{d:"Feb 19",h:"Voltaire Group CFO resigns amid accounting review; stock -4%",s:-1}]},
+  PRDA: {n:"Prada-Neri S.p.A.",         s:"Luxury Fashion",           b:88.30, v:.011,t:.00018,iv:.24,bt:.80,sh:2.6e8,col:"#f1f5f9",
+    ceo:"Miuccia Neri",        f:"1913",emp:"14,500",
+    desc:"A Milanese fashion house known for intellectual minimalism and subversive luxury. Prada-Neri's Galleria bag and nylon collections have achieved icon status across decades.",
+    news:[{d:"Mar 2",h:"PRDA e-commerce sales up 44%; digital-native strategy paying off",s:1},{d:"Feb 25",h:"Prada-Neri opens flagship in Shanghai; 3,000 queue overnight",s:1},{d:"Feb 17",h:"PRDA men's ready-to-wear show receives mixed critical reception",s:0}]},
+  MRCX: {n:"Marceau & Co.",             s:"Luxury Fashion",           b:2140.00,v:.007,t:.00030,iv:.18,bt:.68,sh:9.5e7,col:"#d97706",
+    ceo:"Axel Marceau",        f:"1837",emp:"16,800",
+    desc:"The most exclusive luxury house by price. Marceau & Co. produces fewer than 12,000 handbags annually, each hand-stitched. Its Kelly and Birkin equivalents routinely sell for 10x retail on secondary markets.",
+    news:[{d:"Mar 4",h:"MRCX waitlist for Constellation bag now 8 years; resale market surges",s:1},{d:"Mar 1",h:"Marceau & Co. reports 29% revenue growth; refuses to expand production",s:1}]},
+  RLPH: {n:"Ralston & Sons",            s:"American Fashion",         b:122.40,v:.009,t:.00012,iv:.21,bt:.82,sh:7.4e7,col:"#ef4444",
+    ceo:"David Ralston",       f:"1967",emp:"25,000",
+    desc:"The defining American lifestyle brand, spanning polo shirts, home furnishings, fragrance, and restaurants. Ralston & Sons dresses everyone from prep school students to heads of state.",
+    news:[{d:"Mar 3",h:"RLPH Purple Label line sells out at department stores globally",s:1},{d:"Feb 26",h:"Ralston & Sons announces Olympic partnership; licensed apparel deal",s:1},{d:"Feb 18",h:"RLPH faces supply chain pressure; gross margins dip 180bps",s:-1}]},
+  BURX: {n:"Burwick & Thornton",        s:"British Luxury Fashion",   b:24.80, v:.010,t:.00008,iv:.23,bt:.77,sh:8.6e8,col:"#d97706",
+    ceo:"Jonathan Akeroyd-Wells",f:"1856",emp:"10,000",
+    desc:"A British heritage fashion house defined by its signature plaid and trench coats. Burwick & Thornton has successfully repositioned itself as a digitally-led luxury brand after years of overexposure.",
+    news:[{d:"Mar 2",h:"BURX new creative director's debut collection receives standing ovation",s:1},{d:"Feb 24",h:"Burwick & Thornton Q4 comparable sales up 14% on China strength",s:1},{d:"Feb 16",h:"BURX wholesale pullback pressures near-term revenue",s:-1}]},
+  ZRAX: {n:"Zarax Fashion Group",       s:"Fast Fashion",             b:44.20, v:.014,t:.00010,iv:.28,bt:1.05,sh:6.2e8,col:"#f472b6",
+    ceo:"Amelia Ortega-Ruiz",  f:"1975",emp:"165,000",
+    desc:"The world's largest fast-fashion retailer by store count. Zarax produces 20 new clothing styles daily and ships to 96 countries. Critics attack its environmental record; customers ignore them.",
+    news:[{d:"Mar 4",h:"ZRAX opens 120 new stores in Q1; emerging market expansion accelerates",s:1},{d:"Feb 28",h:"Zarax Fashion faces EU circular economy regulation headwinds",s:-1},{d:"Feb 21",h:"ZRAX logistics efficiency improvements drive margin expansion",s:1}]},
+  NVUX: {n:"Noveau Luxe Holdings",      s:"Luxury Retail / Beauty",   b:166.70,v:.010,t:.00015,iv:.24,bt:.85,sh:2.2e8,col:"#c084fc",
+    ceo:"Sophie Renard",       f:"1969",emp:"90,000",
+    desc:"A luxury retail and beauty conglomerate operating 3,000 stores globally under premium cosmetics, skincare, and fragrance brands. Noveau Luxe is the largest prestige beauty company on the NMX.",
+    news:[{d:"Mar 3",h:"NVUX prestige skincare sales up 21% in North America",s:1},{d:"Feb 25",h:"Noveau Luxe acquires Korean beauty brand for $680M",s:1},{d:"Feb 17",h:"NVUX faces activist investor demanding beauty segment spin-off",s:-1}]},
+  TATX: {n:"Tatum Jewelers International",s:"Fine Jewelry / Watches",  b:104.50,v:.009,t:.00014,iv:.20,bt:.72,sh:4.8e8,col:"#22c55e",
+    ceo:"Charles Tatum IV",    f:"1837",emp:"14,000",
+    desc:"The most recognized jewelry brand in the world. Tatum's iconic blue box is a cultural symbol. The company also produces luxury watches and has expanded into homeware and fragrance.",
+    news:[{d:"Mar 4",h:"TATX engagement ring sales surge; consumer confidence signal",s:1},{d:"Mar 1",h:"Tatum Jewelers partners with three Marvel AU film productions",s:1},{d:"Feb 23",h:"TATX watch division faces Swiss competition; losing market share",s:-1}]},
+  KRSN: {n:"Karsen Sport & Lifestyle",  s:"Sportswear / Athleisure",  b:98.30, v:.012,t:.00015,iv:.25,bt:.95,sh:1.5e9,col:"#22c55e",
+    ceo:"Marcus Karsen Jr.",   f:"1964",emp:"79,000",
+    desc:"The dominant sportswear brand on the NMX. Karsen Sport's Boost sole technology and athlete endorsements have made it the top-selling athletic brand for 18 consecutive years.",
+    news:[{d:"Mar 3",h:"KRSN signs 10-year $400M endorsement deal with top athlete",s:1},{d:"Feb 27",h:"Karsen Sport Q4 direct-to-consumer revenue up 34%",s:1},{d:"Feb 19",h:"KRSN inventory glut in North America; discounting pressure mounts",s:-1}]},
+  STRX: {n:"Stratford Luxury Group",    s:"Luxury Hospitality / Fashion",b:310.20,v:.008,t:.00018,iv:.20,bt:.78,sh:1.4e8,col:"#fbbf24",
+    ceo:"Isabelle Stratford",  f:"1910",emp:"38,000",
+    desc:"A luxury conglomerate spanning five-star hotel brands, fine dining, and premium fashion labels. Stratford's hotels are the preferred residence of heads of state and celebrities worldwide.",
+    news:[{d:"Mar 2",h:"STRX hotel occupancy hits 94%; RevPAR up 18% year-over-year",s:1},{d:"Feb 26",h:"Stratford Luxury Group opens new ultra-luxury resort in Maldives",s:1}]},
 };
 
 function generateCompanies(){
@@ -302,6 +386,12 @@ function generateCompanies(){
     {s:"Cybersecurity",bl:30,bh:160,vl:.014,vh:.026,tl:.0001,th:.0003,ivl:.30,ivh:.55},
     {s:"Logistics",bl:25,bh:110,vl:.009,vh:.016,tl:.0000,th:.0002,ivl:.18,ivh:.30},
     {s:"Materials Science",bl:35,bh:160,vl:.010,vh:.018,tl:.0001,th:.0002,ivl:.22,ivh:.36},
+    {s:"Luxury Fashion",bl:80,bh:400,vl:.008,vh:.014,tl:.0001,th:.0002,ivl:.18,ivh:.28},
+    {s:"Investment Banking",bl:100,bh:500,vl:.007,vh:.012,tl:.0001,th:.0002,ivl:.15,ivh:.22},
+    {s:"Retail Banking",bl:30,bh:100,vl:.006,vh:.010,tl:.0001,th:.0001,ivl:.13,ivh:.20},
+    {s:"Asset Management",bl:200,bh:900,vl:.005,vh:.010,tl:.0001,th:.0002,ivl:.12,ivh:.18},
+    {s:"Fast Fashion",bl:20,bh:80,vl:.012,vh:.020,tl:.0000,th:.0002,ivl:.20,ivh:.32},
+    {s:"Consumer Finance",bl:40,bh:200,vl:.008,vh:.014,tl:.0001,th:.0002,ivl:.16,ivh:.26},
   ];
   const COLS=["#e8b84b","#f59e0b","#34d399","#60a5fa","#a78bfa","#f472b6","#22c55e","#ef4444","#38bdf8","#c084fc","#6ee7b7","#fb923c","#84cc16","#fbbf24","#64748b","#94a3b8","#818cf8","#22d3ee","#d97706","#7c3aed"];
   const res={};let att=0;
@@ -334,7 +424,23 @@ const SYMS=Object.keys(ALL);
 const priceRng=mkRng(Date.now());
 const prices={};const opens={};
 SYMS.forEach(s=>{prices[s]=ALL[s].b;opens[s]=ALL[s].b;});
-function tick(){SYMS.forEach(s=>{const co=ALL[s];prices[s]=Math.max(0.01,+(prices[s]*(1+co.t)+(priceRng()-0.49)*prices[s]*co.v).toFixed(2));});}
+function tick(){
+  SYMS.forEach(s=>{
+    const co=ALL[s];
+    let p=prices[s];
+    // normal drift
+    p=Math.max(0.01,+(p*(1+co.t)+(priceRng()-0.49)*p*co.v).toFixed(2));
+    // apply news shock if active
+    if(priceShocks[s]){
+      const sh=priceShocks[s];
+      p=Math.max(0.01,+(p*(1+sh.pct)).toFixed(2));
+      sh.ticks--;
+      sh.pct*=sh.decay;
+      if(sh.ticks<=0||Math.abs(sh.pct)<0.0001) delete priceShocks[s];
+    }
+    prices[s]=p;
+  });
+}
 
 function genCandles(sym,n=90){
   const co=ALL[sym];const r=mkRng(sym.split('').reduce((a,c)=>a+c.charCodeAt(0),0));
@@ -382,6 +488,20 @@ let authMode = 'login';      // 'login' | 'register'
 let authMsg = null;
 let authLoading = false;
 let appLoading = true;
+
+// AI NEWS ENGINE STATE
+let newsTargetSym = 'STI';
+let newsHeadline = '';
+let newsScope = 'single';
+let newsLoading = false;
+let newsResult = null;
+let newsHistory = [];
+const priceShocks = {};  // {SYM: {pct, decay, ticks}}
+
+// F4 Admin Override state
+let f4AdminUnlocked = false;   // true = admin panel accessible regardless of account
+let f4ModalOpen = false;       // password prompt visible
+let f4Error = '';
 
 // ═══════════════════════════════════════════════════════════
 //  SUPABASE DATA LAYER
@@ -497,6 +617,7 @@ async function doLogout() {
   await sb.auth.signOut();
   currentUser = null; currentProfile = null; userPositions = {}; userTransactions = [];
   authMode = 'login'; authMsg = null;
+  f4AdminUnlocked = false; f4ModalOpen = false; f4Error = '';
   render();
 }
 
@@ -592,7 +713,7 @@ function renderApp() {
   const px = prices[selectedSym];
   const op = opens[selectedSym];
   const chg = pct(px, op);
-  const isAdmin = user.is_admin;
+  const isAdmin = user.is_admin || f4AdminUnlocked;
 
   const topS = ['STI','BCII','BCOR','NDX','VTGS','MREN','CSTL','APBX','RXON','HAIM','GNSS','HDRN','SPRT','TNSK','SHVN','RVLT','MNRL','PTHR','WVLK'];
   const nmxPx = topS.reduce((a,s)=>a+(prices[s]||0),0)/topS.length;
@@ -640,7 +761,7 @@ function renderApp() {
 <div id="body">
   <div id="sidebar">
     <div class="sb-search"><input id="sb-q" placeholder="Search..." value="${esc(sidebarSearch)}"/></div>
-    <div class="sb-filter">${['ALL','Tech','Defense','Bio','Energy','Finance','Mining'].map(f=>`<button class="sf-btn${sidebarFilter===f?' active':''}" data-f="${f}">${f}</button>`).join('')}</div>
+    <div class="sb-filter">${['ALL','Tech','Defense','Bio','Energy','Finance','Banking','Mining','Fashion','Luxury'].map(f=>`<button class="sf-btn${sidebarFilter===f?' active':''}" data-f="${f}">${f}</button>`).join('')}</div>
     <div class="wl-hdr">COMPANIES · ${SYMS.length}</div>
     <div id="watchlist">${wlHtml}</div>
   </div>
@@ -666,7 +787,8 @@ function renderApp() {
     <div id="positions">${posHtml}</div>
   </div>
   <div id="order-panel">${orderHtml}</div>
-</div>`;
+</div>
+${f4ModalOpen ? renderF4Modal() : ''}`;
 }
 
 function renderChart(co,px,chg){
@@ -789,12 +911,78 @@ function renderPortfolio(){
 </div>`;
 }
 
+function renderF4Modal(){
+  return `<div class="overlay" id="f4-overlay">
+    <div class="modal" style="max-width:360px">
+      <div class="modal-title">
+        <div class="modal-badge" style="background:var(--amber);font-size:12px">F4</div>
+        <span style="color:var(--amber);letter-spacing:.12em">ADMIN OVERRIDE</span>
+      </div>
+      <div style="font-size:10px;color:var(--t3);margin-bottom:16px;line-height:1.6">
+        Enter the admin override password to access the control panel on this account.
+      </div>
+      ${f4Error?`<div class="op-msg err" style="margin-bottom:12px">${esc(f4Error)}</div>`:''}
+      <input id="f4-pass" type="password" placeholder="password" style="margin-bottom:12px" autocomplete="off"/>
+      <div style="display:flex;gap:8px">
+        <button id="f4-submit" class="auth-submit" style="flex:1">UNLOCK</button>
+        <button id="f4-cancel" style="flex:1;padding:12px;border:1px solid var(--border2);border-radius:2px;font-size:10px;letter-spacing:.1em;color:var(--t3);font-family:'Courier New',monospace">CANCEL</button>
+      </div>
+      <div style="margin-top:12px;font-size:8px;color:var(--t4);text-align:center;letter-spacing:.08em">PRESS F4 AGAIN TO CLOSE PANEL WHEN DONE</div>
+    </div>
+  </div>`;
+}
+
 function renderAdmin(){
   if(allProfiles.length===0){ loadAllProfiles().then(()=>render()); return `<div id="admin-panel"><div class="loading-txt" style="padding:40px;color:var(--t4)">LOADING USERS...</div></div>`; }
+
+  const symOptions = Object.keys(COMPANIES).map(s=>`<option value="${s}"${s===newsTargetSym?' selected':''}>${s} — ${esc(COMPANIES[s].n)}</option>`).join('');
+
+  const historyHtml = newsHistory.length===0
+    ? `<div style="padding:12px 0;color:var(--t4);font-size:10px">No events fired yet.</div>`
+    : newsHistory.slice(0,20).map(e=>{
+        const cls=e.pctChange>=0?'up':'dn';
+        return `<div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:8px;padding:2px 6px;border-radius:2px;background:var(--bg2);color:var(--gold);white-space:nowrap;margin-top:1px">${e.sym}</span>
+          <div style="flex:1;font-size:10px;color:var(--t1);line-height:1.4">${esc(e.headline)}</div>
+          <span style="font-size:10px;white-space:nowrap" class="${cls}">${pctS(e.pctChange)}</span>
+        </div>`;
+      }).join('');
+
   return `<div id="admin-panel">
-  <div class="admin-title">⚙ ADMIN PANEL — USER MANAGEMENT (${allProfiles.length} users)</div>
+  <div class="admin-title">⚙ ADMIN PANEL</div>
+
+  <!-- AI NEWS ENGINE -->
   <div class="admin-section">
-    <div class="admin-section-title">REGISTERED USERS</div>
+    <div class="admin-section-title">📰 AI NEWS ENGINE — FIRE MARKET EVENTS</div>
+    <div style="background:var(--bg2);border:1px solid var(--border3);border-radius:2px;padding:14px;margin-bottom:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <div>
+          <div class="op-label" style="margin-bottom:4px">TARGET COMPANY</div>
+          <select id="news-sym" style="width:100%;background:var(--bg0);color:var(--t0);border:1px solid var(--border2);padding:7px 8px;border-radius:2px;font-family:'Courier New',monospace;font-size:11px">${symOptions}</select>
+        </div>
+        <div>
+          <div class="op-label" style="margin-bottom:4px">IMPACT SCOPE</div>
+          <div style="display:flex;gap:4px">
+            ${['single','sector','market'].map(s=>`<button class="dir-btn${newsScope===s?' active buy':''}" data-scope="${s}" style="font-size:8px;padding:6px 2px">${s.toUpperCase()}</button>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div style="margin-bottom:10px">
+        <div class="op-label" style="margin-bottom:4px">HEADLINE / EVENT</div>
+        <input id="news-headline" placeholder="e.g. Bee Corp. lab explosion confirmed — casualties reported" value="${esc(newsHeadline)}" style="font-size:11px"/>
+      </div>
+      ${newsResult?`<div class="op-msg ${newsResult.type}" style="margin-bottom:10px">${esc(newsResult.text)}</div>`:''}
+      <button id="news-fire" class="op-submit buy" style="background:${newsLoading?'var(--bg3)':'#1a1a00'};border:1px solid var(--amber);color:var(--amber);letter-spacing:.1em" ${newsLoading?'disabled':''}>
+        ${newsLoading?'⏳ AI ANALYZING...':'⚡ FIRE NEWS EVENT'}
+      </button>
+    </div>
+    <div class="admin-section-title" style="margin-top:4px">RECENT EVENTS</div>
+    <div style="max-height:200px;overflow-y:auto">${historyHtml}</div>
+  </div>
+
+  <!-- USER MANAGEMENT -->
+  <div class="admin-section">
+    <div class="admin-section-title">REGISTERED USERS (${allProfiles.length})</div>
     <div class="admin-users">
       ${allProfiles.map(u=>{
         const inp=adminInputs[u.id]||'';
@@ -820,10 +1008,154 @@ function renderAdmin(){
 </div>`;
 }
 
+
+// ═══════════════════════════════════════════════════════════
+//  AI NEWS ENGINE
+// ═══════════════════════════════════════════════════════════
+async function fireNewsEvent(sym, headline, scope) {
+  newsLoading = true; newsResult = null; render();
+
+  const co = ALL[sym];
+  const currentPrice = prices[sym];
+  const sector = co.s;
+
+  const prompt = `You are a fictional stock market AI for "NMXTrade" — a Marvel AU trading simulation. Analyze this news headline and determine its realistic market impact.
+
+Company: ${sym} — ${co.n}
+Sector: ${sector}
+Current Price: $${currentPrice.toFixed(2)}
+Headline: "${headline}"
+Scope: ${scope} (single = only this stock, sector = all ${sector} stocks, market = entire market)
+
+Respond ONLY with a JSON object, no markdown, no explanation:
+{
+  "sentiment": "bullish" | "bearish" | "neutral",
+  "primaryImpact": <number between -0.25 and 0.25, the immediate % price change for ${sym}>,
+  "decayRate": <number between 0.7 and 0.95, how fast the shock fades per tick>,
+  "durationTicks": <integer 20-120, how many ticks the shock lasts>,
+  "sectorImpact": <number between -0.08 and 0.08, impact on other sector stocks if scope=sector, else 0>,
+  "marketImpact": <number between -0.03 and 0.03, broader market impact if scope=market, else 0>,
+  "reasoning": "<one sentence explaining the market reaction>"
+}
+
+Rules:
+- Catastrophic news (explosions, deaths, fraud) = large negative (-0.15 to -0.25)
+- Major contracts, earnings beats = moderate positive (0.05 to 0.15)  
+- Regulatory issues, investigations = moderate negative (-0.05 to -0.12)
+- Minor news = small impact (-0.03 to 0.03)
+- Classified/mysterious news = unpredictable, could go either way
+- ${co.n} is a ${sector} company. React accordingly.`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 400,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
+    const result = JSON.parse(text);
+
+    // Apply primary shock to target stock
+    priceShocks[sym] = {
+      pct: result.primaryImpact,
+      decay: result.decayRate,
+      ticks: result.durationTicks
+    };
+
+    // Apply sector impact
+    if(scope==='sector' || scope==='market'){
+      const sectorImpact = scope==='market' ? result.marketImpact : result.sectorImpact;
+      SYMS.forEach(s=>{
+        if(s===sym) return;
+        if(scope==='sector' && ALL[s].s!==sector) return;
+        if(Math.abs(sectorImpact) > 0.001){
+          const noise = (Math.random()-0.5)*0.02;
+          priceShocks[s] = {
+            pct: sectorImpact + noise,
+            decay: (result.decayRate+0.05),
+            ticks: Math.floor(result.durationTicks*0.6)
+          };
+        }
+      });
+    }
+
+    // Add to news feed on the company
+    const newsEntry = {
+      d: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}),
+      h: headline,
+      s: result.primaryImpact > 0.01 ? 1 : result.primaryImpact < -0.01 ? -1 : 0
+    };
+    ALL[sym].news.unshift(newsEntry);
+
+    // Log to history
+    const histEntry = {
+      sym, headline,
+      pctChange: result.primaryImpact * 100,
+      sentiment: result.sentiment,
+      reasoning: result.reasoning,
+      ts: Date.now()
+    };
+    newsHistory.unshift(histEntry);
+
+    newsResult = { type: 'ok', text: `${result.sentiment.toUpperCase()} · ${pctS(result.primaryImpact*100)} impact · ${result.reasoning}` };
+    newsHeadline = '';
+  } catch(e) {
+    console.error('News AI error:', e);
+    newsResult = { type: 'err', text: 'AI analysis failed. Check console.' };
+  }
+
+  newsLoading = false;
+  render();
+}
+
 // ═══════════════════════════════════════════════════════════
 //  BIND APP EVENTS
 // ═══════════════════════════════════════════════════════════
 function bindApp(){
+  // F4 global key handler
+  document.onkeydown = e => {
+    if(e.key === 'F4'){
+      e.preventDefault();
+      if(f4AdminUnlocked){
+        // Toggle admin panel off
+        f4AdminUnlocked = false;
+        if(chartTab === 'ADMIN') chartTab = 'CHART';
+        render(); return;
+      }
+      if(f4ModalOpen){ f4ModalOpen=false; f4Error=''; render(); return; }
+      f4ModalOpen = true; f4Error = ''; render();
+      setTimeout(()=>{ const el=document.getElementById('f4-pass'); if(el)el.focus(); },50);
+      return;
+    }
+    if(e.key === 'Escape' && f4ModalOpen){ f4ModalOpen=false; f4Error=''; render(); }
+  };
+
+  // F4 modal bindings
+  const f4overlay = document.getElementById('f4-overlay');
+  if(f4overlay){
+    const doF4 = () => {
+      const val = document.getElementById('f4-pass')?.value || '';
+      if(val === 'imadethistrade303'){
+        f4AdminUnlocked = true; f4ModalOpen = false; f4Error = '';
+        chartTab = 'ADMIN';
+        loadAllProfiles().then(()=>render());
+        render();
+      } else {
+        f4Error = 'Incorrect password.'; render();
+        setTimeout(()=>{ const el=document.getElementById('f4-pass'); if(el){el.value='';el.focus();} },50);
+      }
+    };
+    document.getElementById('f4-submit').onclick = doF4;
+    document.getElementById('f4-cancel').onclick = () => { f4ModalOpen=false; f4Error=''; render(); };
+    document.getElementById('f4-pass').onkeydown = e => { if(e.key==='Enter') doF4(); };
+    f4overlay.onclick = e => { if(e.target===f4overlay){ f4ModalOpen=false; f4Error=''; render(); } };
+  }
+
   document.getElementById('nav-logout').onclick = () => doLogout();
   const portBtn = document.getElementById('nav-port-btn');
   if(portBtn) portBtn.onclick = () => { chartTab=chartTab==='PORTFOLIO'?'CHART':'PORTFOLIO'; render(); };
@@ -904,6 +1236,24 @@ function bindApp(){
       render();
     };
   });
+
+  // News engine bindings
+  const newsSymEl = document.getElementById('news-sym');
+  if(newsSymEl) newsSymEl.onchange = e => { newsTargetSym=e.target.value; };
+
+  const newsHlEl = document.getElementById('news-headline');
+  if(newsHlEl){
+    newsHlEl.oninput = e => { newsHeadline=e.target.value; };
+    newsHlEl.onkeydown = e => { if(e.key==='Enter'&&newsHeadline.trim()) fireNewsEvent(newsTargetSym,newsHeadline.trim(),newsScope); };
+  }
+
+  document.querySelectorAll('[data-scope]').forEach(b=>b.onclick=()=>{newsScope=b.dataset.scope;render();});
+
+  const newsFireBtn = document.getElementById('news-fire');
+  if(newsFireBtn) newsFireBtn.onclick = () => {
+    if(!newsHeadline.trim()){newsResult={type:'err',text:'Enter a headline first.'};render();return;}
+    fireNewsEvent(newsTargetSym, newsHeadline.trim(), newsScope);
+  };
 
   document.querySelectorAll('[data-uid]').forEach(inp=>{
     inp.oninput=e=>{adminInputs[e.target.dataset.uid]=e.target.value;};
